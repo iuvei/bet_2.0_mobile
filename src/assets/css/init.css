@@ -1,0 +1,407 @@
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+hr,
+p,
+blockquote,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+pre,
+form,
+fieldset,
+legend,
+button,
+input,
+textarea,
+th,
+td {
+  margin: 0;
+  padding: 0;
+}
+p
+{
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}
+html,body
+{
+  width: 100%;
+  min-height: 100%;
+  background:#31302E;
+}
+body,
+button,
+input,
+select,
+textarea {
+  font-size: 14px;
+}
+input{
+
+  text-indent:4px;
+  cursor: pointer;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: 100%;
+}
+
+address,
+cite,
+dfn,
+em,
+var {
+  font-style: normal;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: couriernew, courier, monospace;
+}
+
+small {
+  font-size: 12px;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+sup {
+  vertical-align: text-top;
+}
+
+sub {
+  vertical-align: text-bottom;
+}
+
+legend {
+  color: #000;
+}
+
+fieldset,
+img {
+  border: 0;
+}
+
+button,
+input,
+select,
+textarea {
+  font-size: 100%;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* 常用的类名 */
+.clear
+{
+  clear:both;
+}
+.color-red
+{
+  color: #ff4c7a!important;
+}
+.color-green
+{
+  color:#67C23A!important;
+}
+.color-white
+{
+  color:#f3f3f3!important;
+}
+.color-gray
+{
+  color: #909399 !important;
+}
+.bold
+{
+  font-weight: bold;
+}
+.mt5
+{
+  margin-top: 5px;
+}
+.mt10
+{
+  margin-top: 10px;
+}
+.mt15
+{
+  margin-top: 15px;
+}
+.mr10
+{
+  margin-right: 10px;
+}
+.text-center
+{
+  text-align:center;
+}
+.text-left
+{
+  text-align:left;
+}
+.text-right
+{
+  text-align:right;
+}
+.pull-left
+{
+  float: left!important;
+}
+.pull-right
+{
+  float: right!important;
+}
+.mt0
+{
+  margin-left:0px!important;
+}
+a:hover{
+  text-decoration: none;
+}
+.ml10
+{
+  margin-left:10px;
+}
+.ml5
+{
+    margin-left:5px;
+}
+.tijiao,.chongtian
+{
+  padding: 5px 10px !important;
+  box-sizing: content-box!important;
+  margin-top: 5px!important;
+  cursor: pointer;
+}
+
+.text-9
+{
+  text-indent:9px!important;
+}
+
+.w68
+{
+  width: 68px!important;
+  text-indent: 0!important;
+  text-align: center!important;
+}
+
+.pointer{
+    cursor:pointer;
+}
+/*全局的*/
+.global-div
+{
+    position:absolute;
+    top: 0;
+    left: 0;
+    margin-bottom: 20px;
+    width:1200px;
+    overflow-x: hidden;
+}
+.f700
+{
+    font-weight:700;
+}
+
+.bd1
+{
+  border-top: 1px solid #e5e5e5;
+}
+.bd2
+{
+  border-right: 1px solid #e5e5e5;
+}
+.bd3
+{
+   border-bottom: 1px solid #e5e5e5;
+}
+.bd4
+{
+  border-left: 1px solid #e5e5e5;
+}
+
+
+/*cqssc的球的颜色*/
+.hhao1
+{
+  background: #959612;
+}
+.hhao2
+{
+  background: #0060ff;
+}
+.hhao3
+{
+  background: #4d4d4d;
+}
+.hhao4
+{
+  background: #ff7300;
+}
+.hhao5
+{
+  background: #00adad;
+}
+.hhao6
+{
+  background:#5200ff;
+}
+.hhao7
+{
+  background: #666666;
+}
+.hhao8
+{
+  /*background: #ff0000;*/
+  background:#9300ff;
+}
+.hhao9
+{
+  background:#760000;
+}
+.hhao0
+{
+  background:#167301;
+}
+
+
+
+/*pk10的颜色*/
+.hao1
+{
+  background: #959612;
+}
+.hao2
+{
+  background: #0060ff;
+}
+.hao3
+{
+  background: #4d4d4d;
+}
+.hao4
+{
+  background: #ff7300;
+}
+.hao5
+{
+  background: #00adad;
+}
+.hao6
+{
+  background:#5200ff;
+}
+.hao7
+{
+  background: #666666;
+}
+.hao8
+{
+  background:#9300ffe8;
+}
+.hao9
+{
+  background:#760000;
+}
+.hao10
+{
+  background:#167301;
+}
+
+
+/*加拿大28的球的颜色*/
+.bg-red{
+  background: #9c464d!important;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  color: #fff;
+}
+
+.bg-green{
+  background: #3b9c6d !important;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  color: #fff;
+}
+
+
+.bg-blue{
+  background: #285b9c !important;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  color: #fff;
+}
+.bg-white{
+  background: #9f9f9f !important;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  color: #fff;
+}
+.pd56px
+{
+  padding-bottom: 66px;
+}
+
+
+/*主要背景颜色*/
+.bg-main-color
+{
+  background:#31302E;
+}
+.bg-second-color
+{
+  background: rgba(255,255,255,0.1);
+}
+
+
+/*Cqssc的补充css*/
+.mt-range-thumb
+{
+  width: 15px;
+  height: 15px;
+  background: #506eff;
+  top: 7px;
+}
+.mt-range-runway
+{
+  right: -15px;
+}
+.mt-range-content
+{
+  margin-right: 20px;
+}
