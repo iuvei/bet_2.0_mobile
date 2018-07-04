@@ -10,7 +10,7 @@
         </div>
 
 
-        <div class="online-recharge" v-show="true">
+        <div class="online-recharge" v-show="false">
 
             <div class="wechat">
                 <img src="" alt="" class="pull-left recharge-type-logo" >
@@ -75,8 +75,17 @@
 
         </div>
 
-        <div class="online-withdraw" v-show="false">
-            这是提现。。。
+        <div class="online-withdraw" v-show="true">
+            <div class="withdraw-div">
+              <p>提现金额</p>
+              <input type="text" class="withdraw-money">
+
+              <p class="mt15">提现密码</p>
+              <input type="text" class="withdraw-money">
+
+
+              <button class="confirm-withdraw">申请提现</button>
+            </div>
         </div>
 
 
@@ -88,7 +97,16 @@
 
 <script>
     export default {
-        name: "Randw"
+        name: "Randw",
+        data(){
+          return{
+
+          }
+        },
+        methods:
+        {
+
+        }
     }
 </script>
 
@@ -164,4 +182,38 @@
         margin-top: 15px;
         border-bottom: 1px solid #fff;
     }
+</style>
+<style scoped>
+  .withdraw-div
+  {
+    width: 90%;
+    overflow: hidden;
+    text-align: left;
+    margin:15px auto;
+  }
+  .withdraw-money
+  {
+    width: 100%;
+    height: 30px;
+    margin-top: 10px;
+    outline: none;
+    border:1px solid #e8c77a;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    background: #575757;
+    box-sizing: border-box;
+  }
+  .confirm-withdraw
+  {
+    width: 100%;
+    margin-top: 20px;
+    box-sizing: border-box;
+    padding:8px;
+    background-image: linear-gradient(0deg, #e4b340 0%, #a78638 15%, #d7ad4c 40%, #e8c77a 80%, #ffe5a7 100%);
+    color: #fff;
+    border: none;
+    font-size: 1rem;
+    font-weight: 700;
+  }
 </style>

@@ -1,76 +1,14 @@
 <template>
     <div id="money-change">
-         <div class="user_message">
-            <p> <span class="pull-left">2018-05-12 14:00:00</span>  <span class="pull-right">余额: 99999.00</span></p>
+         <div class="user_message" v-for="(v,k) in list">
+            <p> <span class="pull-left">{{v.opr_time}}</span>  <span class="pull-right">余额: {{v.cur}}</span></p>
             <p>
-              <span class="pull-left"> 重庆时时彩下注</span>
-              <span class="pull-right change-money"><span class="color-red">-100.00</span></span>
+              <span class="pull-left"> {{v.con}}</span>
+              <span class="pull-right change-money">
+                <span :class="v.chg>=0?'color-green':'color-red'" >{{v.chg>=0?'+':''}}{{v.chg}}</span>
+              </span>
             </p>
          </div>
-
-
-      <div class="user_message">
-        <p> <span class="pull-left">2018-05-12 14:00:00</span>  <span class="pull-right">余额: 99999.00</span></p>
-        <p>
-          <span class="pull-left"> 重庆时时彩下注</span>
-          <span class="pull-right change-money"><span class="color-green">+100.00</span></span>
-        </p>
-      </div>
-
-      <div class="user_message">
-        <p> <span class="pull-left">2018-05-12 14:00:00</span>  <span class="pull-right">余额: 99999.00</span></p>
-        <p>
-          <span class="pull-left"> 重庆时时彩下注</span>
-          <span class="pull-right change-money"><span class="color-green">+100.00</span></span>
-        </p>
-      </div>
-
-      <div class="user_message">
-        <p> <span class="pull-left">2018-05-12 14:00:00</span>  <span class="pull-right">余额: 99999.00</span></p>
-        <p>
-          <span class="pull-left"> 重庆时时彩下注</span>
-          <span class="pull-right change-money"><span class="color-green">+100.00</span></span>
-        </p>
-      </div>
-
-      <div class="user_message">
-        <p> <span class="pull-left">2018-05-12 14:00:00</span>  <span class="pull-right">余额: 99999.00</span></p>
-        <p>
-          <span class="pull-left"> 重庆时时彩下注</span>
-          <span class="pull-right change-money"><span class="color-green">+100.00</span></span>
-        </p>
-      </div>
-
-
-
-      <div class="user_message">
-        <p> <span class="pull-left">2018-05-12 14:00:00</span>  <span class="pull-right">余额: 99999.00</span></p>
-        <p>
-          <span class="pull-left"> 重庆时时彩下注</span>
-          <span class="pull-right change-money"><span class="color-red">-100.00</span></span>
-        </p>
-      </div>
-
-
-      <div class="user_message">
-        <p> <span class="pull-left">2018-05-12 14:00:00</span>  <span class="pull-right">余额: 99999.00</span></p>
-        <p>
-          <span class="pull-left"> 重庆时时彩下注</span>
-          <span class="pull-right change-money"><span class="color-red">-100.00</span></span>
-        </p>
-      </div>
-
-      <div class="user_message">
-        <p> <span class="pull-left">2018-05-12 14:00:00</span>  <span class="pull-right">余额: 99999.00</span></p>
-        <p>
-          <span class="pull-left"> 重庆时时彩下注</span>
-          <span class="pull-right change-money"><span class="color-red">-100.00</span></span>
-        </p>
-      </div>
-
-
-
-
     </div>
 
 
@@ -78,7 +16,35 @@
 
 <script>
     export default {
-        name: "MoneyChange"
+        name: "MoneyChange",
+        data()
+        {
+          let data =
+          {
+            list:[],
+
+          };
+          return data;
+        },
+        //this.global.config.API  == this.api
+        methods:{
+          get_money:function(){
+            this.$http.get(this.api + '/chgs').then(function(res){
+              console.log(res);
+              if(res.status == 200){
+                this.list = res.data.data.chgs.list;
+                // this.list=res.data.data.list;
+              }else{
+
+              }
+            })
+          }
+        },
+
+        created:function(){
+          this.get_money();
+        }
+
     }
 </script>
 

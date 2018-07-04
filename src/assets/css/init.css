@@ -387,6 +387,10 @@ a:hover{
 {
   background: rgba(255,255,255,0.1);
 }
+.main-bg
+{
+  background-image: -webkit-linear-gradient( 90deg, rgb(167, 134, 56) 0%, rgb(215, 173, 76) 45%, rgb(232, 199, 122) 84%, rgb(255, 229, 167) 100%);
+}
 
 
 /*Cqssc的补充css*/

@@ -3,10 +3,10 @@
 
 
     <!--头部-->
-    <mt-header fixed title="VM大厅" style="background:#161616;">
-      <router-link to="/" slot="left">
-        <mt-button icon="back" style="color: #fff;"></mt-button>
-      </router-link>
+    <mt-header fixed title="" style="background:#161616;">
+      <mt-button slot="left" @click="go_1()" style="font-size: 18px;font-weight: 700;text-indent: 5px;">
+        <
+      </mt-button>
       <mt-button  slot="right">
         <i class="fa fa-navicon" style="font-size: 28px;"></i>
       </mt-button>
@@ -64,7 +64,54 @@ export default {
   },
   methods:
   {
+      //返回上一页
+      go_1()
+      {
+        window.history.go(-1);
+      },
+      /**
+       *  每10秒获取用户的个人信息,如果没有成功的话，前去登录页面，清除绶存
+       */
+      get_users_info:function()
+      {
+        this.$http.get(this.api + "/user/" + window.sessionStorage.user_id ).then(function (response)
+        {
+          if(response.data.status == 200)
+          {
+            let  data = response.data.data.user;
+            this.$store.state.username = data.username;//用户名
+            this.$store.state.nickname = data.nickname;//昵称
+            this.$store.state.cash_money = data.money.cash_money;//现金额度
+            this.$store.state.credit_money = data.money.credit_money;//信用额度
+            this.$store.state.win_lost_today = data.yk;//盈亏
+            this.$store.state.return_present = data.fs;//返水
+          }
+          else
+          {
+            this.$store.state.isLogin    = false; //设置登录flag
+            this.$store.state.user_id    = null;//设置登录user_id
+            window.sessionStorage.isLogin  = null;  //本地会话保存登录状态
+            window.sessionStorage.user_id  = null;//本地会话保存user_id
+            window.sessionStorage.admin    = null;
+            window.sessionStorage.agent    = null;
+            window.sessionStorage.manager  = null;
+            window.sessionStorage.nickname = null;
+            window.sessionStorage.type     = null;
+            window.sessionStorage.username = null;
+            window.sessionStorage.token = null;
+            window.sessionStorage.index = null;
+            clearInterval(this.timeId);
+            this.$router.push('/');
+          }
 
+        });
+      },
+
+
+  },
+  created()
+  {
+    this.get_users_info();
   },
   watch:
   {
