@@ -59,7 +59,7 @@
                 <span class="ctxt">提现</span>
             </li>
 
-            <li>
+            <li @click="turnUrl('subordinate')">
                 <i class="fa fa-group"></i>
                 <span class="ctxt">下线管理</span>
             </li>
