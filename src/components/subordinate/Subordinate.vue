@@ -3,13 +3,25 @@
     <div id="subordinate">
         <div class="sub-head">
 
-          <button class="pull-left add-sub-btn main-bg">添加下级</button>
+          <button class="pull-left add-sub-btn main-bg" @click="turnUrl('add_subordinate')">添加下级</button>
 
           <div class="search-wrap pull-right">
             <input type="text" class="search-name" placeholder="请输入下级名称">
             <button class="fa fa-search search-btn main-bg"></button>
           </div>
           <div class="clear"></div>
+        </div>
+
+
+        <div class="subordinate-list">
+          <table>
+            <tr>
+              <td>用户名</td>
+              <td>团队情况</td>
+              <td>团队情况</td>
+              <td>操作</td>
+            </tr>
+          </table>
         </div>
     </div>
 </template>
@@ -21,6 +33,21 @@
 </script>
 
 <style scoped>
+    .subordinate-list
+    {
+      width: 95%;
+      margin:0 auto;
+    }
+    .subordinate-list table
+    {
+      width:100%;
+      font-size: 0.9rem;
+    }
+    .subordinate-list table tr td
+    {
+      border: 1px solid #454545;
+      padding:0.5rem;
+    }
     .search-name
     {
       width: 100%;

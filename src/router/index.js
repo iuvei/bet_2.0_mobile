@@ -33,7 +33,8 @@ import BetRulesCake28 from '@/components/bet_rules/BetRulesCake28';
 import BetRulesPcegg from '@/components/bet_rules/BetRulesPcegg';
 
 
-import Subordinate from '@/components/Subordinate';
+import Subordinate from '@/components/subordinate/Subordinate';
+import AddSubordinate from '@/components/subordinate/AddSubordinate';
 
 Vue.use(Router);
 
@@ -174,6 +175,11 @@ export default new Router({
       path: '/subordinate',
       name: 'Subordinate',
       component: Subordinate
+    },
+    {
+      path: '/add_subordinate',
+      name: 'AddSubordinate',
+      component: AddSubordinate
     },
   ]
 })
