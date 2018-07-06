@@ -60,6 +60,7 @@ export default {
   data(){
     return{
         selected:1,
+        timeIdCqssc:1,//cqssc的倒计时的id
     }
   },
   methods:
@@ -108,10 +109,85 @@ export default {
       },
 
 
+
+
+      //cqssc的时间
+      get_cqssc_time()
+      {
+        this.$http.get(`${this.api}/ssc/time`).then(function(res){
+          let data = res.data;
+          //this.sales_ = data.saleNum;//已卖期数
+          this.$store.state.cqssc.end_time = data.endtime;//这期的封盘时间
+          this.$store.state.cqssc.open_time = data.opentime;//下期的开盘时间
+          this.$store.state.cqssc.thisExpect = data.expect;//这期下注期数
+          this.count_down_cqssc();
+        });
+      },
+      count_down_cqssc:function ()
+      {
+        let that  = this;
+        //封盘倒计时
+        this.timeIdCqssc = setInterval(function()
+        {
+
+          if(that.$store.state.cqssc.end_time <= 0)
+          {
+            that.$store.state.cqssc.minute = '00';
+            that.$store.state.cqssc.seconds = that.$store.state.cqssc.open_time<10?('0' + that.$store.state.cqssc.open_time.toString()):that.$store.state.cqssc.open_time;
+            that.$store.state.cqssc.open_state = false;
+            if(that.$store.state.cqssc.end_time == 0)
+            {
+              that.thisExpect = parseInt(that.thisExpect) + 1;
+            }
+            if(that.$store.state.cqssc.open_time <= 0 )
+            {
+              if(that.$store.state.cqssc.open_time < -100)
+              {
+                that.$store.state.cqssc.hours = Math.floor(-that.$store.state.cqssc.open_time/(60*60));
+                let hours = Math.floor(-that.$store.state.cqssc.open_time/(60*60));
+                that.$store.state.cqssc.hours = that.$store.state.cqssc.hours == 0 ? '00': ('0' + that.$store.state.cqssc.hours.toString());
+                that.$store.state.cqssc.minute = Math.floor((-that.$store.state.cqssc.open_time - (hours * 3600)) / 60)
+                that.$store.state.cqssc.seconds = Math.floor((-that.$store.state.cqssc.open_time)%60 );
+              }
+              if(that.$store.state.cqssc.open_time == 0)
+              {
+                //清除定时器
+                clearInterval(that.timeIdCqssc);
+                //重新获取时间
+                that.get_cqssc_time();
+                that.$store.state.cqssc.open_state = true;
+              }
+              else
+              {
+                that.$store.state.cqssc.open_time++
+              }
+              return;
+            }
+          }
+          else
+          {
+            let mins = Math.floor(that.$store.state.cqssc.end_time/60);
+            mins = '0' + mins;
+            that.$store.state.cqssc.minute = mins;
+            let seconds = Math.abs(Math.floor(that.$store.state.cqssc.end_time%60));
+            seconds  = seconds>9?seconds:('0'+seconds);
+            that.$store.state.cqssc.seconds = seconds;
+            that.$store.state.cqssc.open_state = true;
+          }
+
+          that.$store.state.cqssc.end_time--;
+          that.$store.state.cqssc.open_time--;
+
+        },1000);
+        //开盘倒计时
+      },
+
+
   },
   created()
   {
     this.get_users_info();
+    this.get_cqssc_time();
   },
   watch:
   {

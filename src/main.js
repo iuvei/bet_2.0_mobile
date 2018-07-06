@@ -36,7 +36,7 @@ Vue.http.options.emulateJSON = true;//vue-resource的处理方案
 var store = new vuex.Store(
   {//store对象
     state:
-      {
+    {
         isLogin: window.sessionStorage.isLogin == 'ok' ? true : false,
         nickname: '加载中',
         cash_money: 0,         //余额
@@ -48,37 +48,64 @@ var store = new vuex.Store(
         isShowUnclear: false,//是否显示右侧的未结算历史（近期下注）
         which_lottery: 'ssc',//当前要哪个彩种的数据
         cqssc:
-          {
+        {
             open_codes: [1, 2, 3, 4, 5],//最后一期的开奖号码
             bingo_money: 0,//中奖金额
             lastExpect: 20180808,//上期的期数
-          },//ssc的一些数据
+            minute:'00',
+            seconds:'00',
+            hours:'00',
+            thisExpect:20180808,//这期的下注期数，
+            end_time:0,    //封盘时间
+            open_time:0,   //开盘时间
+            open_state:true, //是否接收下注
+        },//ssc的一些数据
         pk10:
-          {
-            open_codes: [1, 2, 3, 4, 5],//最后一期的开奖号码
-            bingo_money: 0,//中奖金额
-            lastExpect: 20180808,//上期的期数
-          },//ssc的一些数据
+        {
+          open_codes: [1, 2, 3, 4, 5],//最后一期的开奖号码
+          bingo_money: 0,//中奖金额
+          lastExpect: 20180808,//上期的期数
+          minute:'00',
+          seconds:'00',
+          thisExpect:20180808,//这期的下注期数
+          end_time:0,    //封盘时间
+          open_time:0,   //开盘时间
+          open_state:true, //是否接收下注
+        },//ssc的一些数据
         cake:
-          {
-            open_codes:[1,2,3,4,5],//最后一期的开奖号码
-            bingo_money:0,//中奖金额
-            lastExpect:20180808,//上期的期数
-          },//ssc的一些数据
+        {
+          open_codes:[1,2,3,4,5],//最后一期的开奖号码
+          bingo_money:0,//中奖金额
+          lastExpect:20180808,//上期的期数
+          minute:'00',
+          seconds:'00',
+          thisExpect:20180808,//这期的下注期数
+          end_time:0,    //封盘时间
+          open_time:0,   //开盘时间
+          open_state:true, //是否接收下注
+        },//ssc的一些数据
         egg:
-          {
-            open_codes:[1,2,3,4,5],//最后一期的开奖号码
-            bingo_money:0,//中奖金额
-            lastExpect:20180808,//上期的期数
-          },//ssc的一些数据
-      },
+        {
+          open_codes:[1,2,3,4,5],//最后一期的开奖号码
+          bingo_money:0,//中奖金额
+          lastExpect:20180808,//上期的期数
+          minute:'00',
+          seconds:'00',
+          thisExpect:20180808,//这期的下注期数
+          end_time:0,    //封盘时间
+          open_time:0,   //开盘时间
+          open_state:true, //是否接收下注
+        },//ssc的一些数据
+
+    },//state
+
     mutations:
-      {
-        switch_dialog(isLogin) {//这里的state对应着上面这个states
-          state.isLogin = true;
-          //你还可以在这里执行其他的操作改变state
-        }
+    {
+      switch_dialog(isLogin) {//这里的state对应着上面这个states
+        state.isLogin = true;
+        //你还可以在这里执行其他的操作改变state
       }
+    }//mutations
   });
 /***********************引用vuex 和http请求插件vue-resource***********************************************/
 

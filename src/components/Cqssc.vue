@@ -5,17 +5,14 @@
         <!--头部-->
         <div class="header">
             <div class="mt15">
-                <span class="pull-left pre-expect">2018034506</span>
-                <span class="balls">1</span>
-                <span class="balls">3</span>
-                <span class="balls">5</span>
-                <span class="balls">8</span>
-                <span class="balls">6</span>
+                <span class="pull-left pre-expect">{{lastExpect}}</span>
+                <span class="balls" v-for="v in lastOpenCode">{{v}}</span>
                 <div class="clear"></div>
             </div>
 
             <div class="mt10">
-                <span>2018034507</span> &nbsp;&nbsp;<span>距离封盘：00:05:06</span>
+                <span>{{$store.state.cqssc.thisExpect}}</span> &nbsp;&nbsp;
+                <span>{{$store.state.cqssc.open_time<60?'准备开盘':'距离封盘'}} ：{{$store.state.cqssc.hours}}:{{$store.state.cqssc.minute}}:{{$store.state.cqssc.seconds}}</span>
             </div>
         </div>
         <!--/头部-->
@@ -36,7 +33,11 @@
             <ul v-show="isShowThisDiv[0]">
               <li v-for="(v,k) in double_handicaps_data" >
                 <h2 class="title" >{{v.name}}</h2>
-                <span class="bet-details mr2" v-for="(val,key) in v.data"  :class="bet_content['ball_' + (k+1) + '_half'][key]?'active':''"    @click="betOne(k,key)">
+                <span class="bet-details mr2"
+                      v-for="(val,key) in v.data"
+                      :class="bet_content['ball_' + (k+1) + '_half'][key]?'active':''"
+                      @click="betOne(k,key)"
+                >
                     <b>{{v.name}} {{val}}  <i >1.978</i></b>
                     <i class="ml5 color-white mr2" v-show="bet_content['ball_' + (k+1) + '_half'][key]">￥{{bet_content['ball_' + (k+1) + '_half'][key]}}</i>
                 </span>
@@ -48,8 +49,14 @@
           <ul v-show="isShowThisDiv[1]" >
             <li v-for="(v,k) in total_data">
               <h2 class="title" >{{v.name}}</h2>
-              <span class="bet-details mr2" v-for="(val,key) in v.data">
-                    <b >{{v.name}} {{val}}  <i >1.978</i></b>
+              <span class="bet-details mr2" v-for="(val,key) in v.data"
+                    @click="sumBetOne(key)"
+                    :class="bet_content['dragon_and_tiger'][key]?'active':''"
+              >
+                    <b>{{v.name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content['dragon_and_tiger'][key]"
+                    >￥{{bet_content['dragon_and_tiger'][key]}}</i>
                 </span>
             </li>
           </ul>
@@ -58,59 +65,187 @@
           <ul v-show="isShowThisDiv[2]">
             <li v-for="(v,k) in single_ball_data">
               <h2 class="title" >{{v.name}}</h2>
-              <span class="bet-details mr2"  v-for="(val,key) in v.data">
+              <span class="bet-details mr2"
+                    v-for="(val,key) in v.data"
+                    @click="singleBallBet(k,key)"
+                    :class="bet_content.single_ball_1_5['ball_' + (k+1) + '_digit'][key]?'active':''"
+              >
                     <b >{{v.name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content.single_ball_1_5['ball_' + (k+1) + '_digit'][key]"
+                    >￥{{bet_content.single_ball_1_5['ball_' + (k+1) + '_digit'][key]}}</i>
                 </span>
             </li>
           </ul>
 
           <!--第一球-->
           <ul v-show="isShowThisDiv[3]">
-            <li v-for="(v,k) in first_ball_data">
-              <h2 class="title" >{{v.name}}</h2>
-              <span class="bet-details mr2" v-for="(val,key) in v.data">
-                    <b >{{v.name}} {{val}}  <i >1.978</i></b>
-                </span>
+            <li>
+              <h2 class="title" >{{first_ball_data[0].name}}</h2>
+              <span
+                class="bet-details mr2"
+                v-for="(val,key) in first_ball_data[0].data"
+                :class="bet_content.single_ball_1_5['ball_1_digit'][key]?'active':''"
+                @click="singleBallBet(0,key)"
+              >
+                    <b >{{first_ball_data[0].name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content.single_ball_1_5['ball_1_digit'][key]"
+                    >￥{{bet_content.single_ball_1_5['ball_1_digit'][key]}}</i>
+              </span>
+            </li>
+
+            <li>
+              <h2 class="title" >{{first_ball_data[1].name}}</h2>
+              <span
+                class="bet-details mr2"
+                v-for="(val,key) in first_ball_data[1].data"
+                :class="bet_content['ball_1_half'][key]?'active':''"
+                @click="betOne(0,key)"
+              >
+                    <b >{{first_ball_data[1].name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content['ball_1_half'][key]">
+                      ￥{{bet_content['ball_1_half'][key]}}
+                    </i>
+
+              </span>
             </li>
           </ul>
 
           <!--第二球-->
           <ul v-show="isShowThisDiv[4]">
-            <li v-for="(v,k) in second_ball_data">
-              <h2 class="title" >{{v.name}}</h2>
-              <span class="bet-details mr2" v-for="(val,key) in v.data">
-                    <b >{{v.name}} {{val}}  <i >1.978</i></b>
-                </span>
+            <li>
+              <h2 class="title" >{{second_ball_data[0].name}}</h2>
+              <span
+                class="bet-details mr2"
+                v-for="(val,key) in second_ball_data[0].data"
+                :class="bet_content.single_ball_1_5['ball_2_digit'][key]?'active':''"
+                @click="singleBallBet(1,key)"
+              >
+                    <b >{{second_ball_data[0].name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content.single_ball_1_5['ball_2_digit'][key]"
+                    >￥{{bet_content.single_ball_1_5['ball_2_digit'][key]}}</i>
+              </span>
+            </li>
+
+            <li>
+              <h2 class="title" >{{second_ball_data[1].name}}</h2>
+              <span
+                class="bet-details mr2"
+                v-for="(val,key) in second_ball_data[1].data"
+                :class="bet_content['ball_2_half'][key]?'active':''"
+                @click="betOne(1,key)"
+              >
+                    <b >{{second_ball_data[1].name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content['ball_2_half'][key]">
+                      ￥{{bet_content['ball_2_half'][key]}}
+                    </i>
+              </span>
             </li>
           </ul>
 
           <!--第三球-->
           <ul v-show="isShowThisDiv[5]">
-            <li v-for="(v,k) in third_ball_data">
-              <h2 class="title" >{{v.name}}</h2>
-              <span class="bet-details mr2" v-for="(val,key) in v.data">
-                    <b >{{v.name}} {{val}}  <i >1.978</i></b>
-                </span>
+            <li>
+              <h2 class="title" >{{third_ball_data[0].name}}</h2>
+              <span
+                class="bet-details mr2"
+                v-for="(val,key) in third_ball_data[0].data"
+                :class="bet_content.single_ball_1_5['ball_3_digit'][key]?'active':''"
+                @click="singleBallBet(2,key)"
+              >
+                    <b >{{third_ball_data[0].name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content.single_ball_1_5['ball_3_digit'][key]"
+                    >￥{{bet_content.single_ball_1_5['ball_3_digit'][key]}}</i>
+              </span>
+            </li>
+
+            <li>
+              <h2 class="title" >{{third_ball_data[1].name}}</h2>
+              <span
+                class="bet-details mr2"
+                v-for="(val,key) in third_ball_data[1].data"
+                :class="bet_content['ball_3_half'][key]?'active':''"
+                @click="betOne(2,key)"
+              >
+                    <b >{{third_ball_data[1].name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content['ball_3_half'][key]">
+                      ￥{{bet_content['ball_3_half'][key]}}
+                    </i>
+              </span>
             </li>
           </ul>
 
           <!--第四球-->
           <ul v-show="isShowThisDiv[6]">
-            <li v-for="(v,k) in fourth_ball_data">
-              <h2 class="title" >{{v.name}}</h2>
-              <span class="bet-details mr2" v-for="(val,key) in v.data">
-                    <b >{{v.name}} {{val}}  <i >1.978</i></b>
-                </span>
+            <li>
+              <h2 class="title" >{{fourth_ball_data[0].name}}</h2>
+              <span
+                class="bet-details mr2"
+                v-for="(val,key) in fourth_ball_data[0].data"
+                :class="bet_content.single_ball_1_5['ball_4_digit'][key]?'active':''"
+                @click="singleBallBet(3,key)"
+              >
+                    <b >{{fourth_ball_data[0].name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content.single_ball_1_5['ball_4_digit'][key]"
+                    >￥{{bet_content.single_ball_1_5['ball_4_digit'][key]}}</i>
+              </span>
+            </li>
+
+            <li>
+              <h2 class="title" >{{fourth_ball_data[1].name}}</h2>
+              <span
+                class="bet-details mr2"
+                v-for="(val,key) in fourth_ball_data[1].data"
+                :class="bet_content['ball_4_half'][key]?'active':''"
+                @click="betOne(3,key)"
+              >
+                    <b >{{fourth_ball_data[1].name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content['ball_4_half'][key]">
+                      ￥{{bet_content['ball_4_half'][key]}}
+                    </i>
+              </span>
             </li>
           </ul>
 
           <!--第五球-->
-          <ul v-show="isShowThisDiv[7]" >
-            <li v-for="(v,k) in fifth_ball_data">
-              <h2 class="title" >{{v.name}}</h2>
-              <span class="bet-details mr2" v-for="(val,key) in v.data">
-                    <b >{{v.name}} {{val}}  <i >1.978</i></b>
-                </span>
+          <ul v-show="isShowThisDiv[7]">
+            <li>
+              <h2 class="title" >{{fifth_ball_data[0].name}}</h2>
+              <span
+                class="bet-details mr2"
+                v-for="(val,key) in fifth_ball_data[0].data"
+                :class="bet_content.single_ball_1_5['ball_5_digit'][key]?'active':''"
+                @click="singleBallBet(4,key)"
+              >
+                    <b >{{fifth_ball_data[0].name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content.single_ball_1_5['ball_5_digit'][key]"
+                    >￥{{bet_content.single_ball_1_5['ball_5_digit'][key]}}</i>
+              </span>
+            </li>
+
+            <li>
+              <h2 class="title" >{{fifth_ball_data[1].name}}</h2>
+              <span
+                class="bet-details mr2"
+                v-for="(val,key) in fifth_ball_data[1].data"
+                :class="bet_content['ball_5_half'][key]?'active':''"
+                @click="betOne(4,key)"
+              >
+                    <b >{{fifth_ball_data[1].name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content['ball_5_half'][key]">
+                      ￥{{bet_content['ball_5_half'][key]}}
+                    </i>
+              </span>
             </li>
           </ul>
 
@@ -118,8 +253,18 @@
           <ul v-show="isShowThisDiv[8]" >
             <li v-for="(v,k) in preThree_data">
               <h2 class="title" >{{v.name}}</h2>
-              <span class="bet-details mr2" v-for="(val,key) in v.data">
+              <span
+                class="bet-details mr2"
+                v-for="(val,key) in v.data"
+                @click="frontThree(key)"
+                :class="bet_content.ball_3['front3'][key]?'active':''"
+              >
                     <b >{{v.name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content.ball_3['front3'][key]"
+                    >
+                       ￥{{bet_content.ball_3['front3'][key]}}
+                    </i>
                 </span>
             </li>
           </ul>
@@ -129,8 +274,18 @@
           <ul v-show="isShowThisDiv[9]" >
             <li v-for="(v,k) in midThree_data">
               <h2 class="title" >{{v.name}}</h2>
-              <span class="bet-details mr2" v-for="(val,key) in v.data">
+              <span
+                class="bet-details mr2"
+                v-for="(val,key) in v.data"
+                @click="middleThree(key)"
+                :class="bet_content.ball_3['medium3'][key]?'active':''"
+              >
                     <b >{{v.name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content.ball_3['medium3'][key]"
+                    >
+                       ￥{{bet_content.ball_3['medium3'][key]}}
+                    </i>
                 </span>
             </li>
           </ul>
@@ -139,8 +294,18 @@
           <ul v-show="isShowThisDiv[10]" >
             <li v-for="(v,k) in lastThree_data">
               <h2 class="title" >{{v.name}}</h2>
-              <span class="bet-details mr2" v-for="(val,key) in v.data">
+              <span
+                class="bet-details mr2"
+                v-for="(val,key) in v.data"
+                @click="lastThree(key)"
+                :class="bet_content.ball_3['end3'][key]?'active':''"
+              >
                     <b >{{v.name}} {{val}}  <i >1.978</i></b>
+                    <i class="ml5 color-white mr2"
+                       v-show="bet_content.ball_3['end3'][key]"
+                    >
+                       ￥{{bet_content.ball_3['end3'][key]}}
+                    </i>
                 </span>
             </li>
           </ul>
@@ -187,7 +352,7 @@
 
             <div class="btns">
                 <!--<a class="clear-all">重置金额</a>-->
-                <a class="submit-all">提交</a>
+                <a class="submit-all" @click="post_bet_data">提交</a>
             </div>
         </div>
 
@@ -210,10 +375,11 @@
         data() {
             return {
                 tab1: ['两面盘','总和', '单球1-5','第一球','第二球', '第三球', '第四球', '第五球','前三','中三','后三'],
-
                 isActive: [1, 0, 0, 0, 0, 0, 0],
                 isShowThisDiv: [1, 0, 0, 0, 0, 0, 0, 0, 0],
                 timeId1:1,
+                lastExpect:20180808049,
+                lastOpenCode:[1,2,3,4,5],
                 rangeValue:0,
                 outSide:false,
                 fs:0,
@@ -300,12 +466,59 @@
                 //下注内容对应的下注金额
                 bet_content:
                 {
+                  //两面盘
+                  double:
+                  {
+                    ball_1_half:['','','',''],
+                    ball_2_half:['','','',''],
+                    ball_3_half:['','','',''],
+                    ball_4_half:['','','',''],
+                    ball_5_half:['','','',''],
+                  },
+                  //总和
+                  dragon_and_tiger:['','','','','','',''],
+                  //单球1-5
+                  singleBall:
+                  {
+                    ball_1_digit:['','','','','','','','','',''],
+                    ball_2_digit:['','','','','','','','','',''],
+                    ball_3_digit:['','','','','','','','','',''],
+                    ball_4_digit:['','','','','','','','','',''],
+                    ball_5_digit:['','','','','','','','','',''],
+                  },
+                  firstBall:
+                  {
+                     half :['','','',''],
+                     digit:['','','','','','','','','',''],
+                  },
+                  secondBall:
+                  {
+                    half :['','','',''],
+                    digit:['','','','','','','','','',''],
+                  },
+                  thirdBall:
+                  {
+                    half :['','','',''],
+                    digit:['','','','','','','','','',''],
+                  },
+                  fourthBall:
+                  {
+                    half :['','','',''],
+                    digit:['','','','','','','','','',''],
+                  },
+                  fifthBall:
+                  {
+                    half :['','','',''],
+                    digit:['','','','','','','','','',''],
+                  },
+
+
                   ball_1_half:['','','',''],
                   ball_2_half:['','','',''],
                   ball_3_half:['','','',''],
                   ball_4_half:['','','',''],
                   ball_5_half:['','','',''],
-                  dragon_and_tiger:['','','','','','',''],
+
                   single_ball_1_5:
                   {
                       ball_1_digit:['','','','','','','','','',''],
@@ -315,11 +528,12 @@
                       ball_5_digit:['','','','','','','','','',''],
                   },
                   ball_3:
-                    {
-                      front3:['','','','',''],
-                      medium3:['','','','',''],
-                      end3:['','','','',''],
-                    },
+                  {
+                    front3:['','','','',''],
+                    medium3:['','','','',''],
+                    end3:['','','','',''],
+                  },
+
                 },
                 //这个玩法是否有下注
                 hasBetCount:
@@ -362,7 +576,7 @@
                 dicrationaries_2:
                 [
                   '第一球大','第一球小','第一球单','第一球双',
-                  '总和-单','总和-双','总和-大','总和-小','总和-龙','总和-虎','总和-和',
+                  '总和-大','总和-小','总和-单','总和-双','总和-龙','总和-虎','总和-和',
                   '第二球大','第二球小','第二球单','第二球双',
                   '第三球大','第三球小','第三球单','第三球双',
                   '第四球大','第四球小','第四球单','第四球双',
@@ -372,200 +586,388 @@
                   '第三球-特码-0','第三球-特码-1','第三球-特码-2','第三球-特码-3','第三球-特码-4','第三球-特码-5','第三球-特码-6','第三球-特码-7','第三球-特码-8','第三球-特码-9',
                   '第四球-特码-0','第四球-特码-1','第四球-特码-2','第四球-特码-3','第四球-特码-4','第四球-特码-5','第四球-特码-6','第四球-特码-7','第四球-特码-8','第四球-特码-9',
                   '第五球-特码-0','第五球-特码-1','第五球-特码-2','第五球-特码-3','第五球-特码-4','第五球-特码-5','第五球-特码-6','第五球-特码-7','第五球-特码-8','第五球-特码-9',
-                  '前三-豹子','前三-顺子','前三-对子','前三-半顺','前三-杂六',
-                  '中三-豹子','中三-顺子','中三-对子','中三-半顺','中三-杂六',
-                  '后三-豹子','后三-顺子','后三-对子','后三-半顺','后三-杂六',
+                  '前三-豹子','前三-对子','前三-顺子','前三-半顺','前三-杂六',
+                  '中三-豹子','中三-对子','中三-顺子','中三-半顺','中三-杂六',
+                  '后三-豹子','后三-对子','后三-顺子','后三-半顺','后三-杂六',
                 ],
             };
         },
         methods:
+        {
+            /**
+             * 切换选项卡
+             */
+            tabs(index) {
+                this.isActive = [0, 0, 0, 0, 0, 0, 0];
+                this.isShowThisDiv = [0, 0, 0, 0, 0, 0, 0];
+                this.isActive[index] = 1;
+                this.isShowThisDiv[index] = 1;
+            },
+            test()
+            {
+                if(!this.outSide)
                 {
-                /**
-                 * 切换选项卡
-                 */
-                tabs(index) {
-                    this.isActive = [0, 0, 0, 0, 0, 0, 0];
-                    this.isShowThisDiv = [0, 0, 0, 0, 0, 0, 0];
-                    this.isActive[index] = 1;
-                    this.isShowThisDiv[index] = 1;
-                },
-                test()
+                    let BrowserHeight = document.body.clientWidth;
+                    let betContent = document.querySelector('.bet-money');
+                    let startLeft = betContent.offsetLeft;
+                    let that = this;
+                    this.timeId1 = setInterval(function(){
+
+                        if(startLeft < BrowserHeight)
+                        {
+                            startLeft  += 4;
+                            betContent.style.left = startLeft + "px";
+                        }
+                        else
+                        {
+                            clearInterval(that.timeId1);
+                            that.outSide = !that.outSide;
+                        }
+                    },3);
+                }
+                else
                 {
-                    if(!this.outSide)
-                    {
-                        let BrowserHeight = document.body.clientWidth;
-                        let betContent = document.querySelector('.bet-money');
-                        let startLeft = betContent.offsetLeft;
-                        let that = this;
-                        this.timeId1 = setInterval(function(){
+                    let BrowserHeight = document.body.clientWidth;
+                    let betContent = document.querySelector('.bet-money');
+                    let startLeft = betContent.offsetLeft;
+                    let that = this;
+                    this.timeId1 = setInterval(function(){
 
-                            if(startLeft < BrowserHeight)
-                            {
-                                startLeft  += 4;
-                                betContent.style.left = startLeft + "px";
-                            }
-                            else
-                            {
-                                clearInterval(that.timeId1);
-                                that.outSide = !that.outSide;
-                            }
-                        },3);
-                    }
-                    else
-                    {
-                        let BrowserHeight = document.body.clientWidth;
-                        let betContent = document.querySelector('.bet-money');
-                        let startLeft = betContent.offsetLeft;
-                        let that = this;
-                        this.timeId1 = setInterval(function(){
+                        if(startLeft > 100)
+                        {
+                            startLeft  -= 4;
+                            betContent.style.left = startLeft + "px";
+                        }
+                        else
+                        {
+                            clearInterval(that.timeId1);
+                            that.outSide = !that.outSide;
+                        }
 
-                            if(startLeft > 100)
-                            {
-                                startLeft  -= 4;
-                                betContent.style.left = startLeft + "px";
-                            }
-                            else
-                            {
-                                clearInterval(that.timeId1);
-                                that.outSide = !that.outSide;
-                            }
-
-                        },3);
-                        this.join_bet_list();
-                    }
+                    },3);
+                    this.join_bet_list();
+                }
 
 
-                },
-                //选中一个下注
-                betOne:function(k,key)
+            },
+            //两面盘选中一个下注
+            betOne:function(k,key)
+            {
+              //这个下注内容的下注金额为 当前选中的金额
+              this.bet_content['ball_' + (k + 1) + '_half'][key] = this.bet_money;
+              this.bet_content.double['ball_' + (k + 1) + '_half'][key] = this.bet_money;
+
+              this.hasBetCount.double_handicaps = 0;
+              //查看这个玩法下了多少个了
+              for(let i=1; i<=5;i++)
+              {
+                for(let j=0;j<this.bet_content.double['ball_' + i + '_half'].length;j++)
                 {
-                  //这个下注内容的下注金额为 当前选中的金额
-                  this.bet_content['ball_' + (k + 1) + '_half'][key] = this.bet_money;
-                  this.hasBetCount.double_handicaps = 0;
-                  //查看这个玩法下了多少个了
-                  for(let i=1; i<=5;i++)
+                  if(this.bet_content.double['ball_' + i + '_half'][j])
                   {
-                    for(let j=0;j<this.bet_content['ball_' + i + '_half'].length;j++)
-                    {
-                      if(this.bet_content['ball_' + i + '_half'][j])
-                      {
-                        this.hasBetCount.double_handicaps += 1;
-                      }
-                    }
+                    this.hasBetCount.double_handicaps += 1;
                   }
+                }
+              }
 
 
 
-                  //更新视图用的方法
-                  this.bet_content['ball_' + (k + 1) + '_half'].reverse().reverse();
-                  let keys = ['K','L','M','N'];//组织数组
-                  this.bets.push({content:'ball_' + (k + 1) + '_half' + '__' + keys[key],money:this.bet_money});//添加到下注内容区
+              //更新视图用的方法
+              this.bet_content['ball_' + (k + 1) + '_half'].reverse().reverse();
+              let keys = ['K','L','M','N'];//组织数组
+              this.bets.push({content:'ball_' + (k + 1) + '_half' + '__' + keys[key],money:this.bet_money});//添加到下注内容区
 
-                  //过滤掉相同的数组
+              //过滤掉相同的数组
+              this.filter_same();
+
+            },
+
+            //总和选中一个下注
+            sumBetOne:function(k)
+            {
+              let keys = ['A','B','C','D','E','F','G'];//组织数组
+              let key  = 'dragon_and_tiger';//组织数组
+              //这个下注内容的下注金额为 当前选中的金额
+              this.bet_content['dragon_and_tiger'][k] = this.bet_money;
+              this.hasBetCount.total = 0;
+              //查看这个玩法下了多少个了
+
+              for(let j=0;j<this.bet_content['dragon_and_tiger'].length;j++)
+              {
+                if(this.bet_content['dragon_and_tiger'][j])
+                {
+                  this.hasBetCount.total += 1;
+                }
+              }
+
+              //更新视图用的方法
+              this.bet_content['dragon_and_tiger'].reverse().reverse();
+
+              this.bets.push({content:'dragon_and_tiger__' + keys[k],money:this.bet_money});//添加到下注内容区
+
+              //过滤掉相同的数组
+              this.filter_same();
+            },
+
+
+            //单球1-5的下注
+            singleBallBet:function(index,k)
+            {
+
+              let Alphabet = ['A','B','C','D','E','F','G','H','I','J'];//组织数组  ball_1_digit
+              let keys = ['ball_1_digit','ball_2_digit','ball_3_digit','ball_4_digit','ball_5_digit'];
+
+              //这个下注内容的下注金额为 当前选中的金额
+              this.bet_content.single_ball_1_5[keys[index]][k] = this.bet_money;
+              this.hasBetCount.single_ball = 0;
+              //查看这个玩法下了多少个了
+              for(let i=0;i<5;i++)
+              {
+
+                for(let j=0;j<this.bet_content['single_ball_1_5'][keys[index]].length;j++)
+                {
+                  if(this.bet_content['single_ball_1_5']['ball_'+ (i+1) +'_digit'][j])
+                  {
+                    this.hasBetCount.single_ball += 1;
+                  }
+                }
+              }
+
+              //更新视图用的方法
+              this.bet_content['single_ball_1_5'][keys[index]].reverse().reverse();
+
+              this.bets.push({content:keys[index] + '__' + Alphabet[k],money:this.bet_money});//添加到下注内容区
+              //过滤掉相同的数组
+              this.filter_same();
+            },
+
+
+            frontThree:function(k)
+            {
+
+              let keys = ['A','B','C','D','E'];
+
+              //这个下注内容的下注金额为 当前选中的金额
+              this.bet_content.ball_3['front3'][k] = this.bet_money;
+
+              //更新视图用的方法
+              this.bet_content.ball_3['front3'].reverse().reverse();
+
+              this.bets.push({content:'front_3' + '__' + keys[k],money:this.bet_money});//添加到下注内容区
+              //过滤掉相同的数组
+              this.filter_same();
+            },
+
+            middleThree:function(k)
+            {
+
+              let keys = ['A','B','C','D','E'];
+
+              //这个下注内容的下注金额为 当前选中的金额
+              this.bet_content.ball_3['medium3'][k] = this.bet_money;
+
+              //更新视图用的方法
+              this.bet_content.ball_3['medium3'].reverse().reverse();
+
+              this.bets.push({content:'medium_3' + '__' + keys[k],money:this.bet_money});//添加到下注内容区
+              //过滤掉相同的数组
+              this.filter_same();
+            },
+
+            lastThree:function(k)
+            {
+
+              let keys = ['A','B','C','D','E'];
+
+              //这个下注内容的下注金额为 当前选中的金额
+              this.bet_content.ball_3['end3'][k] = this.bet_money;
+
+              //更新视图用的方法
+              this.bet_content.ball_3['end3'].reverse().reverse();
+
+              this.bets.push({content:'end_3' + '__' + keys[k],money:this.bet_money});//添加到下注内容区
+              //过滤掉相同的数组
+              this.filter_same();
+            },
+
+
+
+
+
+            //加入到下注列表中
+            join_bet_list:function()
+            {
+              //清空下注内容
+              this.data = [];
+
+              for(let i = 0; i<this.bets.length;i++)
+              {
+                //赔率
+                let str = '';
+                //下注内容的下标，对应可以找到下注内容的中文，和赔率
+                let index = this.dicrationaries.indexOf(this.bets[i].content);
+                this.data.push({content:this.dicrationaries_2[index], odds:1.9851,odds2:1.985, money:this.bets[i].money,fs:0});
+
+                //算下注的总金额
+                let sumMoney = 0;
+                sumMoney += parseInt(this.bets[i].money);
+              }
+            },
+
+
+            //过滤掉相同的数组
+            filter_same:function ()
+            {
+              for(let i = 0; i < this.bets.length;i++)
+              {
+                let key =  this.bets[i].content;
+                var flag = false;
+                for(let j = i+1;j<this.bets.length;j++)
+                {
+                  if(key == this.bets[j].content)
+                  {
+                    this.bets.splice(i,1);
+                    flag = true;
+                    break;
+                  }
+                }
+                if(!this.bets[i].money)
+                {
+                  this.bets.splice(i,1);
+                  flag = true;
+                }
+                if(flag)
+                {
                   this.filter_same();
+                  break;
+                }
+              }
 
-                },
+            },
 
 
-                //加入到下注列表中
-                join_bet_list:function()
+            //改变下注金额
+            changeBetMoney:function(money)
+            {
+              this.bet_money = money;
+            },
+
+            //重置所有数据
+            reset()
+            {
+              //清空数据
+              this.bets = [];
+              //重置ui
+              this.bet_content =
                 {
-                  //清空下注内容
-                  this.data = [];
+                  ball_1_half:['','','',''],
+                  ball_2_half:['','','',''],
+                  ball_3_half:['','','',''],
+                  ball_4_half:['','','',''],
+                  ball_5_half:['','','',''],
+                  dragon_and_tiger:['','','','','','',''],
+                  single_ball_1_5:
+                    {
+                      ball_1_digit:['','','','','','','','','',''],
+                      ball_2_digit:['','','','','','','','','',''],
+                      ball_3_digit:['','','','','','','','','',''],
+                      ball_4_digit:['','','','','','','','','',''],
+                      ball_5_digit:['','','','','','','','','',''],
+                    },
+                  ball_3:
+                    {
+                      front3:['','','','',''],
+                      medium3:['','','','',''],
+                      end3:['','','','',''],
+                    },
+                };
+              //更新视图层
+              this.bet_content.ball_1_half.reverse().reverse();
+            },
 
-                  for(let i = 0; i<this.bets.length;i++)
+            get_last_code: function ()
+            {
+              this.$http.get(this.api + '/ssc/lastLty', {}).then(function (res)
+              {
+                //获取到最新一期的数据
+                let data = res.data;
+                this.lastOpenCode = data.opencode;
+                this.lastExpect = `${data.expect}`;
+              });
+            },
+
+
+            //向服务器提交下注内容
+            post_bet_data()
+            {
+              this.$http.post(`${this.api}/ssc/order`,{bets:this.bets,odds_table:'a'}).then(function(res)
+              {
+                if(res.data.status == 200)
+                {
+                  //清除下注内容
+                  this.reset();
+                  //从服务器上获取余额
+                  this.$http.get(this.api + "/user/" + window.sessionStorage.user_id ).then(function (response)
                   {
-                    //赔率
-                    let str = '';
-                    //下注内容的下标，对应可以找到下注内容的中文，和赔率
-                    let index = this.dicrationaries.indexOf(this.bets[i].content);
-                    this.data.push({content:this.dicrationaries_2[index], odds:1.9851,odds2:1.985, money:this.bets[i].money,fs:0});
+                    let  data = response.data.data.user;
+                    this.$set(this.$store.state,'cash_money',data.money.cash_money)
+                  });
 
-                    //算下注的总金额
-                    let sumMoney = 0;
-                    sumMoney += parseInt(this.bets[i].money);
-                  }
-                },
-
-
-                //过滤掉相同的数组
-                filter_same:function ()
+                  //提示下注成功
+                  this.$toast({message:res.data.msg});
+                }
+                else
                 {
-                  for(let i = 0; i < this.bets.length;i++)
-                  {
-                    let key =  this.bets[i].content;
-                    var flag = false;
-                    for(let j = i+1;j<this.bets.length;j++)
-                    {
-                      if(key == this.bets[j].content)
-                      {
-                        this.bets.splice(i,1);
-                        flag = true;
-                        break;
-                      }
-                    }
-                    if(!this.bets[i].money)
-                    {
-                      this.bets.splice(i,1);
-                      flag = true;
-                    }
-                    if(flag)
-                    {
-                      this.filter_same();
-                      break;
-                    }
-                  }
+                  this.$toast({message:res.data.msg});
+                }
 
-                },
+              });
+            },
 
 
-                //改变下注金额
-                changeBetMoney:function(money)
-                {
-                  this.bet_money = money;
-                },
 
-                //重置所有数据
-                reset()
-                {
-                  //清空数据
-                  this.bets = [];
-                  //重置ui
-                  this.bet_content =
-                    {
-                      ball_1_half:['','','',''],
-                      ball_2_half:['','','',''],
-                      ball_3_half:['','','',''],
-                      ball_4_half:['','','',''],
-                      ball_5_half:['','','',''],
-                      dragon_and_tiger:['','','','','','',''],
-                      single_ball_1_5:
-                        {
-                          ball_1_digit:['','','','','','','','','',''],
-                          ball_2_digit:['','','','','','','','','',''],
-                          ball_3_digit:['','','','','','','','','',''],
-                          ball_4_digit:['','','','','','','','','',''],
-                          ball_5_digit:['','','','','','','','','',''],
-                        },
-                      ball_3:
-                        {
-                          front3:['','','','',''],
-                          medium3:['','','','',''],
-                          end3:['','','','',''],
-                        },
-                    };
-                  //更新视图层
-                  this.bet_content.ball_1_half.reverse().reverse();
-                },
-            }
-            ,
+        },//methods end
+
         created()
         {
+          this.$http.get(this.api + "/user/" + window.sessionStorage.user_id ).then(function (response)
+          {
+            let  data = response.data.data.user;
+            this.vaild_lotteries = data.valid_types;//用户拥有哪些彩种
+            if(this.vaild_lotteries.indexOf('cqssc') != -1)
+            {
+              // 1 获取重庆时时彩的时间和期数
+              //this.get_time();
+              // 2 获取最新的开奖号码
+              this.get_last_code();
+              // 3 获取用户拥有哪些盘口
+              //this.get_users_handicaps();
+              // 4 获取用户的赔率
+              //this.get_odds();
+              // 5 获取开奖历史
+              //this.get_history();
+              // 6 获取未结算清单
+              //.get_ssc_unclear();
+              // 7.获取长龙出数据
+              //this.get_londDragon_data();
+            }
+            else
+            {
+              this.$toast({message: '请先登录！',});
+              //this.$router.push('usercenter');
+            }
+
+          });
+
+
+
+
+           //为右边的下注列表的特效
            let that = this;
            setTimeout(()=>{
              that.test();
-           },300)
-        },
+           },300);
+        },// end created();
         watch:
         {
             "rangeValue":function(n,o)
