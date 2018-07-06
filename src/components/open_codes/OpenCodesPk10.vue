@@ -2,125 +2,17 @@
 <template>
     <div id="cqssc-open-codes">
         <ul>
-          <li>
+          <li v-for="(v,k) in list">
             <div>
-                <div class="time">20180616023  <span class="pull-right which-seconds">15:14:30</span></div>
+                <div class="time">{{v.expect}}  <span class="pull-right which-seconds">{{v.opentime.substring(10)}}</span></div>
+                <!--<div class="time">{{v.opentime}}</div>-->
                 <div class="clear"></div>
                 <div >
-                  <span class="ball hao1">1</span>
-                  <span class="ball hao2">2</span>
-                  <span class="ball hao3">3</span>
-                  <span class="ball hao4">4</span>
-                  <span class="ball hao5">5</span>
-                  <span class="ball hao6">6</span>
-                  <span class="ball hao7">7</span>
-                  <span class="ball hao8">8</span>
-                  <span class="ball hao9">9</span>
-                  <span class="ball hao10">10</span>
+                  <span class="ball" v-for="(val,i) in v.open_codes" :class=" 'hao'+(i+1) ">{{val}}</span>
                   <div class="clear"></div>
                 </div>
 
               </div>
-          </li>
-          <li>
-            <div>
-              <div class="time">20180616023  <span class="pull-right which-seconds">15:14:30</span></div>
-              <div class="clear"></div>
-              <div >
-                <span class="ball hao1">1</span>
-                <span class="ball hao2">2</span>
-                <span class="ball hao3">3</span>
-                <span class="ball hao4">4</span>
-                <span class="ball hao5">5</span>
-                <span class="ball hao6">6</span>
-                <span class="ball hao7">7</span>
-                <span class="ball hao8">8</span>
-                <span class="ball hao9">9</span>
-                <span class="ball hao10">10</span>
-                <div class="clear"></div>
-              </div>
-
-            </div>
-          </li>
-          <li>
-            <div>
-              <div class="time">20180616023  <span class="pull-right which-seconds">15:14:30</span></div>
-              <div class="clear"></div>
-              <div >
-                <span class="ball hao1">1</span>
-                <span class="ball hao2">2</span>
-                <span class="ball hao3">3</span>
-                <span class="ball hao4">4</span>
-                <span class="ball hao5">5</span>
-                <span class="ball hao6">6</span>
-                <span class="ball hao7">7</span>
-                <span class="ball hao8">8</span>
-                <span class="ball hao9">9</span>
-                <span class="ball hao10">10</span>
-                <div class="clear"></div>
-              </div>
-
-            </div>
-          </li>
-          <li>
-            <div>
-              <div class="time">20180616023  <span class="pull-right which-seconds">15:14:30</span></div>
-              <div class="clear"></div>
-              <div >
-                <span class="ball hao1">1</span>
-                <span class="ball hao2">2</span>
-                <span class="ball hao3">3</span>
-                <span class="ball hao4">4</span>
-                <span class="ball hao5">5</span>
-                <span class="ball hao6">6</span>
-                <span class="ball hao7">7</span>
-                <span class="ball hao8">8</span>
-                <span class="ball hao9">9</span>
-                <span class="ball hao10">10</span>
-                <div class="clear"></div>
-              </div>
-
-            </div>
-          </li>
-          <li>
-            <div>
-              <div class="time">20180616023  <span class="pull-right which-seconds">15:14:30</span></div>
-              <div class="clear"></div>
-              <div >
-                <span class="ball hao1">1</span>
-                <span class="ball hao2">2</span>
-                <span class="ball hao3">3</span>
-                <span class="ball hao4">4</span>
-                <span class="ball hao5">5</span>
-                <span class="ball hao6">6</span>
-                <span class="ball hao7">7</span>
-                <span class="ball hao8">8</span>
-                <span class="ball hao9">9</span>
-                <span class="ball hao10">10</span>
-                <div class="clear"></div>
-              </div>
-
-            </div>
-          </li>
-          <li>
-            <div>
-              <div class="time">20180616023  <span class="pull-right which-seconds">15:14:30</span></div>
-              <div class="clear"></div>
-              <div >
-                <span class="ball hao1">1</span>
-                <span class="ball hao2">2</span>
-                <span class="ball hao3">3</span>
-                <span class="ball hao4">4</span>
-                <span class="ball hao5">5</span>
-                <span class="ball hao6">6</span>
-                <span class="ball hao7">7</span>
-                <span class="ball hao8">8</span>
-                <span class="ball hao9">9</span>
-                <span class="ball hao10">10</span>
-                <div class="clear"></div>
-              </div>
-
-            </div>
           </li>
         </ul>
     </div>
@@ -128,7 +20,28 @@
 
 <script>
     export default {
-        name: "OpenCodesPk10"
+        name: "OpenCodesPk10",
+      data:function(){
+          return{
+            list:[],
+          }
+      },
+      methods:{
+      //    获取数据 初始化
+        get_list_data:function(){
+          this.$http.get(this.api + '/pk10/history/lottery').then(function(res){
+            // console.log(res);
+            if(res.status == 200){
+              this.list=res.data.data.list;
+            }else{
+
+            }
+          })
+        }
+      },
+      created:function(){
+          this.get_list_data();
+      },
     }
 </script>
 
@@ -142,7 +55,7 @@
   ul
   {
     width: 100%;
-
+    padding-bottom: 4rem;
   }
   ul>li
   {

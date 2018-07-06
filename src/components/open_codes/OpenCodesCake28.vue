@@ -2,6 +2,23 @@
 <template>
     <div id="cqssc-open-codes">
         <ul>
+          <li v-for="(v,k) in list">
+            <div>
+                <div class="time">{{v.expect}}  <span class="pull-right which-seconds">{{v.opentime.substring(10)}}</span></div>
+                <div class="clear"></div>
+                <div >
+                  <span class="ball bg-red">{{v.details.ball_0[0]}}</span>
+                  <span class="jjcc">+</span>
+                  <span class="ball bg-green">{{v.details.ball_0[1]}}</span>
+                  <span class="jjcc">+</span>
+                  <span class="ball bg-blue">{{v.details.ball_0[2]}}</span>
+                  <span class="jjcc">=</span>
+                  <span class="ball bg-white">{{v.details.ball_1[0]}}</span>
+                  <div class="clear"></div>
+                </div>
+              </div>
+          </li>
+          <!--
           <li>
             <div>
                 <div class="time">20180616023  <span class="pull-right which-seconds">15:14:30</span></div>
@@ -18,109 +35,37 @@
                 </div>
               </div>
           </li>
-          <li>
-            <div>
-                <div class="time">20180616023  <span class="pull-right which-seconds">15:14:30</span></div>
-                <div class="clear"></div>
-                <div >
-                  <span class="ball bg-red">1</span>
-                  <span class="jjcc">+</span>
-                  <span class="ball bg-green">2</span>
-                  <span class="jjcc">+</span>
-                  <span class="ball bg-blue">3</span>
-                  <span class="jjcc">=</span>
-                  <span class="ball bg-white">6</span>
-                  <div class="clear"></div>
-                </div>
-              </div>
-          </li>
-          <li>
-            <div>
-              <div class="time">20180616023  <span class="pull-right which-seconds">15:14:30</span></div>
-              <div class="clear"></div>
-              <div >
-                <span class="ball bg-red">1</span>
-                <span class="jjcc">+</span>
-                <span class="ball bg-green">2</span>
-                <span class="jjcc">+</span>
-                <span class="ball bg-blue">3</span>
-                <span class="jjcc">=</span>
-                <span class="ball bg-white">6</span>
-                <div class="clear"></div>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div>
-              <div class="time">20180616023  <span class="pull-right which-seconds">15:14:30</span></div>
-              <div class="clear"></div>
-              <div >
-                <span class="ball bg-red">1</span>
-                <span class="jjcc">+</span>
-                <span class="ball bg-green">2</span>
-                <span class="jjcc">+</span>
-                <span class="ball bg-blue">3</span>
-                <span class="jjcc">=</span>
-                <span class="ball bg-white">6</span>
-                <div class="clear"></div>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div>
-              <div class="time">20180616023  <span class="pull-right which-seconds">15:14:30</span></div>
-              <div class="clear"></div>
-              <div >
-                <span class="ball bg-red">1</span>
-                <span class="jjcc">+</span>
-                <span class="ball bg-green">2</span>
-                <span class="jjcc">+</span>
-                <span class="ball bg-blue">3</span>
-                <span class="jjcc">=</span>
-                <span class="ball bg-white">6</span>
-                <div class="clear"></div>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div>
-              <div class="time">20180616023  <span class="pull-right which-seconds">15:14:30</span></div>
-              <div class="clear"></div>
-              <div >
-                <span class="ball bg-red">1</span>
-                <span class="jjcc">+</span>
-                <span class="ball bg-green">2</span>
-                <span class="jjcc">+</span>
-                <span class="ball bg-blue">3</span>
-                <span class="jjcc">=</span>
-                <span class="ball bg-white">6</span>
-                <div class="clear"></div>
-              </div>
-            </div>
-          </li>
-          <li>
-            <div>
-              <div class="time">20180616023  <span class="pull-right which-seconds">15:14:30</span></div>
-              <div class="clear"></div>
-              <div >
-                <span class="ball bg-red">1</span>
-                <span class="jjcc">+</span>
-                <span class="ball bg-green">2</span>
-                <span class="jjcc">+</span>
-                <span class="ball bg-blue">3</span>
-                <span class="jjcc">=</span>
-                <span class="ball bg-white">6</span>
-                <div class="clear"></div>
-              </div>
-            </div>
-          </li>
+          -->
+
         </ul>
     </div>
 </template>
 
 <script>
     export default {
-        name: "OpenCodesCake28"
+        name: "OpenCodesCake28",
+        data:function(){
+          var data={
+            list:[],
+          };
+          return data;
+        },
+
+        methods:{
+          get_data_list:function(){
+            this.$http.get(this.api + '/cake/history/lottery' ).then(function(res){
+              console.log(res);
+              if(res.status == 200){
+                this.list=res.data.data.list;
+              }else{
+
+              }
+            })
+          }
+        },
+        created(){
+          this.get_data_list();
+        },
     }
 </script>
 
@@ -134,7 +79,7 @@
   ul
   {
     width: 100%;
-
+    padding-bottom: 4rem;
   }
   ul>li
   {
