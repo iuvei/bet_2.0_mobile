@@ -337,13 +337,13 @@
       <div class="bet-list mt15">
 
 
-        <p class="color-white text-left" style="margin-bottom: 5px;text-indent: 10px;">下注列表 <span class="pull-right"
-                                                                                                  style="margin-right: 5px;"> 返水{{rangeValue/10}}%</span>
+        <p class="color-white text-left" style="margin-bottom: 5px;text-indent: 10px;">
+          下注列表 <span class="pull-right" style="margin-right: 5px;"> 返水{{rangeValue/10}}%</span>
         </p>
         <ul class="text-left nmbd-ul">
           <li v-for="(v,k) in data">
-            <span style="width: 63px;">{{v.content}}</span>
-            <span style="width: 40px;text-align: left;">{{v.odds}}</span>
+            <span style="width: 6.5rem;">{{v.content}}</span>
+            <span style="width: 2.4rem;text-align: left;">{{v.odds}}</span>
             <span class="color-white bet-one-money">￥{{v.money}}</span>
             <span>返{{v.fs}}</span>
             <span class="pull-right mr10 color-red" style="margin-right: 25px;">X</span></li>
@@ -1071,10 +1071,28 @@
             //赔率
             let str = '';
             //下注内容的下标，对应可以找到下注内容的中文，和赔率
-            let index = this.dicrationaries.indexOf(this.bets[i].content);
+            //赔率
+            var index = this.dicrationaries.indexOf(this.bets[i].content);
+            //是否趺倍，子盘才有的趺倍
+            if(this.$store.state.son_off)
+            {
+              if(this.is_dec(this.bets[i].content,this.bets[i].money))
+              {
+                let odds = (Number(this.all_odds[index]) - Number(this.is_dec(this.bets[i].content,this.bets[i].money))).toFixed(4);
+                str += `${odds}`;
+              }
+              else
+              {
+                str += `${this.all_odds[index]}`;
+              }
+            }
+            else
+            {
+              str += `${this.all_odds[index]}`;
+            }
             this.data.push({
               content: this.dicrationaries_2[index],
-              odds: 1.9851,
+              odds: str,
               odds2: 1.985,
               money: this.bets[i].money,
               fs: 0
