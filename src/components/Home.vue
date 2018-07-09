@@ -47,12 +47,12 @@
                 </div>
 
                 <div class="baijiale1">
-                    <div class="bjls bgbg" @click="turnTo('cqssc')">
+                    <div class="bjls bgbg" @click="turnTo('pk10')">
                         <img src="../assets/img/icon_bjpk.png" alt="" style="width: 35px;margin-left: 10px;">
                         <div style="margin-left: 5px;">北京赛车</div>
                     </div>
 
-                    <div class="bjls bgbg mt6">
+                    <div class="bjls bgbg mt6" @click="turnTo('cqssc')">
                         <img src="../assets/img/icon_ssc.png" alt="" style="width: 35px;margin-left: 10px;">
                         <div style="margin-left: 5px;">时时彩</div>
                     </div>

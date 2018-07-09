@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 import Home from '@/components/Home';
 import Login from '@/components/Login';
-import Cqssc from '@/components/Cqssc';
+
 import Randw from '@/components/Randw';
 import Usercenter from '@/components/Usercenter';
 import MoneyChange from '@/components/MoneyChange';
@@ -11,6 +11,10 @@ import Clear from '@/components/Clear';
 import DiagramClear from '@/components/DiagramClear';
 import DiagramDetails from '@/components/DiagramDetails';
 import OneDayBill from '@/components/OneDayBill';
+
+import Cqssc from '@/components/Cqssc';
+import Pk10 from '@/components/Pk10';
+
 
 import OpenCodes from '@/components/open_codes/OpenCodes';
 import OpenCodesCqssc from '@/components/open_codes/OpenCodesCqssc';
@@ -55,6 +59,11 @@ export default new Router({
         path: '/cqssc',
         name: 'Cqssc',
         component: Cqssc
+    },
+    {
+      path: '/pk10',
+      name: 'Pk10',
+      component: Pk10
     },
     {
         path: '/randw',
