@@ -1,17 +1,16 @@
 <template>
     <div class="recharge-withdraw">
-
+        <!--head tab-->
         <div class="header-tabs">
             <ul>
-                <li class="active">在线充值</li>
-                <li>在线提现</li>
-                <li>交易记录</li>
+                <li :class="active_arr[0]?'active':''" @click="choose_one(0)">在线充值</li>
+                <li :class="active_arr[1]?'active':''" @click="choose_one(1)">在线提现</li>
+                <li :class="active_arr[2]?'active':''" @click="choose_one(2)">交易记录</li>
             </ul>
         </div>
-
-
-        <div class="online-recharge" v-show="false">
-
+      <!--section-->
+      <!--充值-->
+        <div class="online-recharge" v-show="active_arr[0]">
             <div class="wechat">
                 <img src="" alt="" class="pull-left recharge-type-logo" >
 
@@ -72,24 +71,20 @@
                     >
                 </div>
             </div>
-
         </div>
-
-        <div class="online-withdraw" v-show="true">
+      <!--提现-->
+        <div class="online-withdraw" v-show="active_arr[1]">
             <div class="withdraw-div">
               <p>提现金额</p>
               <input type="text" class="withdraw-money">
-
               <p class="mt15">提现密码</p>
               <input type="text" class="withdraw-money">
-
 
               <button class="confirm-withdraw">申请提现</button>
             </div>
         </div>
-
-
-        <div class="history" v-show="false">
+      <!--交易记录-->
+        <div class="history" v-show="active_arr[2]">
             这是交易记录。。。
         </div>
     </div>
@@ -100,11 +95,18 @@
         name: "Randw",
         data(){
           return{
-
+              active_arr:[1,0,0],
           }
         },
         methods:
         {
+          //tab 切換
+          choose_one:function(i){
+            this.active_arr=[0,0,0];
+            this.active_arr[i]=1;
+          },
+        },
+        created(){
 
         }
     }
@@ -156,7 +158,7 @@
         height: 40px;
         line-height: 40px;
         box-sizing: border-box;
-        border-left:1px solid #e5e5e5;
+        /*border-left:1px solid #e5e5e5;*/
         border-bottom:1px solid #e5e5e5;
     }
 
@@ -203,6 +205,7 @@
     border-radius: 5px;
     background: #575757;
     box-sizing: border-box;
+    color:#f2f2f2;
   }
   .confirm-withdraw
   {

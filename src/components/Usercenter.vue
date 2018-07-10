@@ -10,10 +10,7 @@
               <p class="pull-left" style="width: 50%;">今日返水: <span class="color-red">{{$store.state.return_present}} </span></p>
               <div class="clear"></div>
             </div>
-
-
         </div>
-
 
         <ul v-show="$store.state.isLogin">
             <li @click="turnUrl('money_change')">
@@ -49,12 +46,12 @@
                 <span class="ctxt">玩法规则</span>
             </li>
 
-            <li>
+            <li @click="turnUrl('randw')">
                 <i class="fa fa-usd"></i>
                 <span class="ctxt">充值</span>
             </li>
 
-            <li>
+            <li @click="turnUrl('randw')">
                 <i class="fa fa-yen"></i>
                 <span class="ctxt">提现</span>
             </li>
