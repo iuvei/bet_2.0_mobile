@@ -103,13 +103,14 @@
           <span
             class="bet-details mr2"
             v-for="(val,key) in first_ball_data[1].data"
-            :class="bet_content['ball_1_half'][key]?'active':''"
-            @click="betOne(0,key)"
+            :class="bet_content.firstToFifthBall['firstBall']['half'][key]?'active':''"
+
+            @click="firstBallBet2(key)"
           >
                     <b>{{first_ball_data[1].name}} {{val}}  <i>{{odds.double_aspect['ball_1_half'][key]}}</i></b>
                     <i class="ml5 color-white mr2"
-                       v-show="bet_content['ball_1_half'][key]">
-                      ￥{{bet_content['ball_1_half'][key]}}
+                       v-show="bet_content.firstToFifthBall['firstBall']['half'][key]">
+                      ￥{{bet_content.firstToFifthBall['firstBall']['half'][key]}}
                     </i>
 
               </span>
@@ -123,13 +124,13 @@
           <span
             class="bet-details mr2"
             v-for="(val,key) in second_ball_data[0].data"
-            :class="bet_content.single_ball_1_5['ball_2_digit'][key]?'active':''"
-            @click="singleBallBet(1,key)"
+            :class="bet_content.firstToFifthBall['secondBall']['digit'][key]?'active':''"
+            @click="secondBallBet(key)"
           >
                     <b>{{second_ball_data[0].name}} {{val}}  <i>{{odds.single_ball_1_5['ball_2_digit'][key]}}</i></b>
                     <i class="ml5 color-white mr2"
-                       v-show="bet_content.single_ball_1_5['ball_2_digit'][key]"
-                    >￥{{bet_content.single_ball_1_5['ball_2_digit'][key]}}</i>
+                       v-show="bet_content.firstToFifthBall['secondBall']['digit'][key]"
+                    >￥{{bet_content.firstToFifthBall['secondBall']['digit'][key]}}</i>
               </span>
         </li>
 
@@ -138,14 +139,16 @@
           <span
             class="bet-details mr2"
             v-for="(val,key) in second_ball_data[1].data"
-            :class="bet_content['ball_2_half'][key]?'active':''"
-            @click="betOne(1,key)"
+            :class="bet_content.firstToFifthBall['secondBall']['half'][key]?'active':''"
+
+            @click="secondBallBet2(key)"
           >
                     <b>{{second_ball_data[1].name}} {{val}}  <i>{{odds.double_aspect['ball_2_half'][key]}}</i></b>
                     <i class="ml5 color-white mr2"
-                       v-show="bet_content['ball_2_half'][key]">
-                      ￥{{bet_content['ball_2_half'][key]}}
+                       v-show="bet_content.firstToFifthBall['secondBall']['half'][key]">
+                      ￥{{bet_content.firstToFifthBall['secondBall']['half'][key]}}
                     </i>
+
               </span>
         </li>
       </ul>
@@ -157,13 +160,13 @@
           <span
             class="bet-details mr2"
             v-for="(val,key) in third_ball_data[0].data"
-            :class="bet_content.single_ball_1_5['ball_3_digit'][key]?'active':''"
-            @click="singleBallBet(2,key)"
+            :class="bet_content.firstToFifthBall['thirdBall']['digit'][key]?'active':''"
+            @click="thirdBallBet(key)"
           >
                     <b>{{third_ball_data[0].name}} {{val}}  <i>{{odds.single_ball_1_5['ball_3_digit'][key]}}</i></b>
                     <i class="ml5 color-white mr2"
-                       v-show="bet_content.single_ball_1_5['ball_3_digit'][key]"
-                    >￥{{bet_content.single_ball_1_5['ball_3_digit'][key]}}</i>
+                       v-show="bet_content.firstToFifthBall['thirdBall']['digit'][key]"
+                    >￥{{bet_content.firstToFifthBall['thirdBall']['digit'][key]}}</i>
               </span>
         </li>
 
@@ -172,13 +175,13 @@
           <span
             class="bet-details mr2"
             v-for="(val,key) in third_ball_data[1].data"
-            :class="bet_content['ball_3_half'][key]?'active':''"
-            @click="betOne(2,key)"
+            :class="bet_content.firstToFifthBall['thirdBall']['half'][key]?'active':''"
+            @click="thirdBallBet2(key)"
           >
                     <b>{{third_ball_data[1].name}} {{val}}  <i>{{odds.double_aspect['ball_3_half'][key]}}</i></b>
                     <i class="ml5 color-white mr2"
-                       v-show="bet_content['ball_3_half'][key]">
-                      ￥{{bet_content['ball_3_half'][key]}}
+                       v-show="bet_content.firstToFifthBall['thirdBall']['half'][key]">
+                      ￥{{bet_content.firstToFifthBall['thirdBall']['half'][key]}}
                     </i>
               </span>
         </li>
@@ -191,13 +194,13 @@
           <span
             class="bet-details mr2"
             v-for="(val,key) in fourth_ball_data[0].data"
-            :class="bet_content.single_ball_1_5['ball_4_digit'][key]?'active':''"
-            @click="singleBallBet(3,key)"
+            :class="bet_content.firstToFifthBall['fourthBall']['digit'][key]?'active':''"
+            @click="fourthBallBet(key)"
           >
                     <b>{{fourth_ball_data[0].name}} {{val}}  <i>{{odds.single_ball_1_5['ball_4_digit'][key]}}</i></b>
                     <i class="ml5 color-white mr2"
-                       v-show="bet_content.single_ball_1_5['ball_4_digit'][key]"
-                    >￥{{bet_content.single_ball_1_5['ball_4_digit'][key]}}</i>
+                       v-show="bet_content.firstToFifthBall['fourthBall']['digit'][key]"
+                    >￥{{bet_content.firstToFifthBall['fourthBall']['digit'][key]}}</i>
               </span>
         </li>
 
@@ -206,14 +209,14 @@
           <span
             class="bet-details mr2"
             v-for="(val,key) in fourth_ball_data[1].data"
-            :class="bet_content['ball_4_half'][key]?'active':''"
-            @click="betOne(3,key)"
+            :class="bet_content.firstToFifthBall['fourthBall']['half'][key]?'active':''"
+            @click="fourthBallBet2(key)"
           >
                     <b>{{fourth_ball_data[1].name}} {{val}}  <i>{{odds.double_aspect['ball_4_half'][key]}}
 </i></b>
                     <i class="ml5 color-white mr2"
-                       v-show="bet_content['ball_4_half'][key]">
-                      ￥{{bet_content['ball_4_half'][key]}}
+                       v-show="bet_content.firstToFifthBall['fourthBall']['half'][key]">
+                      ￥{{bet_content.firstToFifthBall['fourthBall']['half'][key]}}
                     </i>
               </span>
         </li>
@@ -226,13 +229,13 @@
           <span
             class="bet-details mr2"
             v-for="(val,key) in fifth_ball_data[0].data"
-            :class="bet_content.single_ball_1_5['ball_5_digit'][key]?'active':''"
-            @click="singleBallBet(4,key)"
+            :class="bet_content.firstToFifthBall['fifthBall']['digit'][key]?'active':''"
+            @click="fifthBallBet(key)"
           >
                     <b>{{fifth_ball_data[0].name}} {{val}}  <i>{{odds.single_ball_1_5['ball_5_digit'][key]}}</i></b>
                     <i class="ml5 color-white mr2"
-                       v-show="bet_content.single_ball_1_5['ball_5_digit'][key]"
-                    >￥{{bet_content.single_ball_1_5['ball_5_digit'][key]}}</i>
+                       v-show="bet_content.firstToFifthBall['fifthBall']['digit'][key]"
+                    >￥{{bet_content.firstToFifthBall['fifthBall']['digit'][key]}}</i>
               </span>
         </li>
 
@@ -241,13 +244,13 @@
           <span
             class="bet-details mr2"
             v-for="(val,key) in fifth_ball_data[1].data"
-            :class="bet_content['ball_5_half'][key]?'active':''"
-            @click="betOne(4,key)"
+            :class="bet_content.firstToFifthBall['fifthBall']['half'][key]?'active':''"
+            @click="fifthBallBet2(key)"
           >
                     <b>{{fifth_ball_data[1].name}} {{val}}  <i>{{odds.double_aspect['ball_5_half'][key]}}</i></b>
                     <i class="ml5 color-white mr2"
-                       v-show="bet_content['ball_5_half'][key]">
-                      ￥{{bet_content['ball_5_half'][key]}}
+                       v-show="bet_content.firstToFifthBall['fifthBall']['half'][key]">
+                      ￥{{bet_content.firstToFifthBall['fifthBall']['half'][key]}}
                     </i>
               </span>
         </li>
@@ -601,6 +604,11 @@
         //用户返水
         fanshui: 0,
 
+
+        //备用数据  用于两面盘的
+        back_data:[],
+
+
         //跌倍
         dec_limit:
           {
@@ -658,6 +666,14 @@
 
         //纯赔率列表
         all_odds: [],
+
+        //所有的下注数据
+        all_data:[],
+
+
+
+
+
       };
     },
     methods:
@@ -744,6 +760,9 @@
 
         },
 
+
+
+
         //总和选中一个下注
         sumBetOne: function (k) {
           let keys = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];//组织数组
@@ -807,73 +826,397 @@
 
 
         //第一球的下注内容
-        firstBallBet: function (k) {
+        firstBallBet: function (k)
+        {
           let Alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];//组织数组  ball_1_digit
           //这个下注内容的下注金额为 当前选中的金额
           this.bet_content.firstToFifthBall.firstBall.digit[k] =
             this.bet_content.firstToFifthBall.firstBall.digit[k] ?
               this.bet_content.firstToFifthBall.firstBall.digit[k] + this.bet_money :
               this.bet_money;
-
-
-          let count = 0;
-
-          for (let j = 0; j < this.bet_content.firstToFifthBall.firstBall.half.length; j++) {
-            if (this.bet_content.firstToFifthBall.firstBall.half[j]) {
-              count += 1;
-            }
-          }
-          this.hasBetCount.first_ball = count;
-          for (let j = 0; j < this.bet_content.firstToFifthBall.firstBall.digit.length; j++) {
-            if (this.bet_content.firstToFifthBall.firstBall.digit[j]) {
-
-              this.hasBetCount.first_ball += 1;
-            }
-          }
           //更新视图用的方法
           this.bet_content.firstToFifthBall.firstBall.digit.reverse().reverse();
+          let num = 0;
+          let f   = false;
+          for(let i=0;i<this.back_data.length;i++)
+          {
+             if(this.back_data[i].content == 'ball_1_digit' + '__' + Alphabet[k])
+             {
+               num = i;
+               f   = true;
+               break;
+             }
+          }
+          if(f)
+          {
+            //更新金钱
+            this.back_data[num].money = this.bet_content.firstToFifthBall.firstBall.digit[k];
+          }
+          else
+          {
+            //更新金钱加入到下注列表
+            this.back_data.push({
+              content: 'ball_1_digit' + '__' + Alphabet[k],
+              money: this.bet_content.firstToFifthBall.firstBall.digit[k]
+            });//添加到下注内容区
 
-          this.bets.push({
-            content: 'ball_1_digit' + '__' + Alphabet[k],
-            money: this.bet_content.firstToFifthBall.firstBall.digit[k]
-          });//添加到下注内容区
+          }
+          this.hasBetCount.first_ball = this.back_data.length;
           //过滤掉相同的数组
           this.filter_same();
         },
-        firstBallBet2: function (k) {
+
+        firstBallBet2: function (k)
+        {
           let keys = ['K', 'L', 'M', 'N'];//组织数组
           //这个下注内容的下注金额为 当前选中的金额
           this.bet_content.firstToFifthBall.firstBall.half[k] =
             this.bet_content.firstToFifthBall.firstBall.half[k] ?
               this.bet_content.firstToFifthBall.firstBall.half[k] + this.bet_money :
               this.bet_money;
-
-          this.hasBetCount.first_ball = 0;
-          let count = 0;
-
-          for (let j = 0; j < this.bet_content.firstToFifthBall.firstBall.digit.length; j++) {
-            if (this.bet_content.firstToFifthBall.firstBall.digit[j]) {
-              count += 1;
-            }
-          }
-
-          this.hasBetCount.first_ball = count;
-
-          for (let j = 0; j < this.bet_content.firstToFifthBall.firstBall.half.length; j++) {
-            if (this.bet_content.firstToFifthBall.firstBall.half[j]) {
-              this.hasBetCount.first_ball += 1;
-            }
-          }
           //更新视图用的方法
-          this.bet_content.firstToFifthBall.firstBall.digit.reverse().reverse();
+          this.bet_content.firstToFifthBall.firstBall.half.reverse().reverse();
+          let num = 0;
+          let f   = false;
+          for(let i=0;i<this.back_data.length;i++)
+          {
+            if(this.back_data[i].content == 'ball_1_half' + '__' + keys[k])
+            {
+              num = i;
+              f   = true;
+              break;
+            }
+          }
+          if(f)
+          {
+            //更新金钱
+            this.back_data[num].money = this.bet_content.firstToFifthBall.firstBall.half[k];
+          }
+          else
+          {
+            //更新金钱加入到下注列表
+            this.back_data.push({
+              content: 'ball_1_half' + '__' + keys[k],
+              money: this.bet_content.firstToFifthBall.firstBall.half[k]
+            });//添加到下注内容区
+          }
+          this.hasBetCount.first_ball = this.back_data.length;
+          this.filter_same();
+        },
 
-          this.bets.push({
-            content: 'ball_1_digit' + '__' + Alphabet[k],
-            money: this.bet_content.firstToFifthBall.firstBall.digit[k]
-          });//添加到下注内容区
+        //第2球的下注内容
+        secondBallBet: function (k)
+        {
+          let Alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];//组织数组  ball_1_digit
+          //这个下注内容的下注金额为 当前选中的金额
+          this.bet_content.firstToFifthBall.secondBall.digit[k] =
+            this.bet_content.firstToFifthBall.secondBall.digit[k] ?
+              this.bet_content.firstToFifthBall.secondBall.digit[k] + this.bet_money :
+              this.bet_money;
+          //更新视图用的方法
+          this.bet_content.firstToFifthBall.secondBall.digit.reverse().reverse();
+          let num = 0;
+          let f   = false;
+          for(let i=0;i<this.back_data.length;i++)
+          {
+            if(this.back_data[i].content == 'ball_2_digit' + '__' + Alphabet[k])
+            {
+              num = i;
+              f   = true;
+              break;
+            }
+          }
+          if(f)
+          {
+            //更新金钱
+            this.back_data[num].money = this.bet_content.firstToFifthBall.secondBall.digit[k];
+          }
+          else
+          {
+            //更新金钱加入到下注列表
+            this.back_data.push({
+              content: 'ball_2_digit' + '__' + Alphabet[k],
+              money: this.bet_content.firstToFifthBall.secondBall.digit[k]
+            });//添加到下注内容区
+
+          }
+          this.hasBetCount.first_ball = this.back_data.length;
           //过滤掉相同的数组
           this.filter_same();
         },
+
+        secondBallBet2: function (k)
+        {
+          let keys = ['K', 'L', 'M', 'N'];//组织数组
+          //这个下注内容的下注金额为 当前选中的金额
+          this.bet_content.firstToFifthBall.secondBall.half[k] =
+            this.bet_content.firstToFifthBall.secondBall.half[k] ?
+              this.bet_content.firstToFifthBall.secondBall.half[k] + this.bet_money :
+              this.bet_money;
+          //更新视图用的方法
+          this.bet_content.firstToFifthBall.secondBall.half.reverse().reverse();
+          let num = 0;
+          let f   = false;
+          for(let i=0;i<this.back_data.length;i++)
+          {
+            if(this.back_data[i].content == 'ball_2_half' + '__' + keys[k])
+            {
+              num = i;
+              f   = true;
+              break;
+            }
+          }
+          if(f)
+          {
+            //更新金钱
+            this.back_data[num].money = this.bet_content.firstToFifthBall.secondBall.half[k];
+          }
+          else
+          {
+            //更新金钱加入到下注列表
+            this.back_data.push({
+              content: 'ball_2_half' + '__' + keys[k],
+              money: this.bet_content.firstToFifthBall.secondBall.half[k]
+            });//添加到下注内容区
+          }
+
+          this.filter_same();
+        },
+
+        //第3球的下注内容
+        thirdBallBet: function (k)
+        {
+          let Alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];//组织数组  ball_1_digit
+          //这个下注内容的下注金额为 当前选中的金额
+          this.bet_content.firstToFifthBall.thirdBall.digit[k] =
+            this.bet_content.firstToFifthBall.thirdBall.digit[k] ?
+              this.bet_content.firstToFifthBall.thirdBall.digit[k] + this.bet_money :
+              this.bet_money;
+          //更新视图用的方法
+          this.bet_content.firstToFifthBall.thirdBall.digit.reverse().reverse();
+          let num = 0;
+          let f   = false;
+          for(let i=0;i<this.back_data.length;i++)
+          {
+            if(this.back_data[i].content == 'ball_3_digit' + '__' + Alphabet[k])
+            {
+              num = i;
+              f   = true;
+              break;
+            }
+          }
+          if(f)
+          {
+            //更新金钱
+            this.back_data[num].money = this.bet_content.firstToFifthBall.thirdBall.digit[k];
+          }
+          else
+          {
+            //更新金钱加入到下注列表
+            this.back_data.push({
+              content: 'ball_3_digit' + '__' + Alphabet[k],
+              money: this.bet_content.firstToFifthBall.thirdBall.digit[k]
+            });//添加到下注内容区
+
+          }
+          //过滤掉相同的数组
+          this.filter_same();
+        },
+
+        thirdBallBet2: function (k)
+        {
+          let keys = ['K', 'L', 'M', 'N'];//组织数组
+          //这个下注内容的下注金额为 当前选中的金额
+          this.bet_content.firstToFifthBall.thirdBall.half[k] =
+            this.bet_content.firstToFifthBall.thirdBall.half[k] ?
+              this.bet_content.firstToFifthBall.thirdBall.half[k] + this.bet_money :
+              this.bet_money;
+          //更新视图用的方法
+          this.bet_content.firstToFifthBall.thirdBall.half.reverse().reverse();
+          let num = 0;
+          let f   = false;
+          for(let i=0;i<this.back_data.length;i++)
+          {
+            if(this.back_data[i].content == 'ball_3_half' + '__' + keys[k])
+            {
+              num = i;
+              f   = true;
+              break;
+            }
+          }
+          if(f)
+          {
+            //更新金钱
+            this.back_data[num].money = this.bet_content.firstToFifthBall.thirdBall.half[k];
+          }
+          else
+          {
+            //更新金钱加入到下注列表
+            this.back_data.push({
+              content: 'ball_3_half' + '__' + keys[k],
+              money: this.bet_content.firstToFifthBall.thirdBall.half[k]
+            });//添加到下注内容区
+          }
+          this.filter_same();
+        },
+
+        //第4球的下注内容
+        fourthBallBet: function (k)
+        {
+          let Alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];//组织数组  ball_1_digit
+          //这个下注内容的下注金额为 当前选中的金额
+          this.bet_content.firstToFifthBall.fourthBall.digit[k] =
+            this.bet_content.firstToFifthBall.fourthBall.digit[k] ?
+              this.bet_content.firstToFifthBall.fourthBall.digit[k] + this.bet_money :
+              this.bet_money;
+          //更新视图用的方法
+          this.bet_content.firstToFifthBall.fourthBall.digit.reverse().reverse();
+          let num = 0;
+          let f   = false;
+          for(let i=0;i<this.back_data.length;i++)
+          {
+            if(this.back_data[i].content == 'ball_4_digit' + '__' + Alphabet[k])
+            {
+              num = i;
+              f   = true;
+              break;
+            }
+          }
+          if(f)
+          {
+            //更新金钱
+            this.back_data[num].money = this.bet_content.firstToFifthBall.fourthBall.digit[k];
+          }
+          else
+          {
+            //更新金钱加入到下注列表
+            this.back_data.push({
+              content: 'ball_4_digit' + '__' + Alphabet[k],
+              money: this.bet_content.firstToFifthBall.fourthBall.digit[k]
+            });//添加到下注内容区
+
+          }
+          //过滤掉相同的数组
+          this.filter_same();
+        },
+
+        fourthBallBet2: function (k)
+        {
+          let keys = ['K', 'L', 'M', 'N'];//组织数组
+          //这个下注内容的下注金额为 当前选中的金额
+          this.bet_content.firstToFifthBall.fourthBall.half[k] =
+            this.bet_content.firstToFifthBall.fourthBall.half[k] ?
+              this.bet_content.firstToFifthBall.fourthBall.half[k] + this.bet_money :
+              this.bet_money;
+          //更新视图用的方法
+          this.bet_content.firstToFifthBall.fourthBall.half.reverse().reverse();
+          let num = 0;
+          let f   = false;
+          for(let i=0;i<this.back_data.length;i++)
+          {
+            if(this.back_data[i].content == 'ball_4_half' + '__' + keys[k])
+            {
+              num = i;
+              f   = true;
+              break;
+            }
+          }
+          if(f)
+          {
+            //更新金钱
+            this.back_data[num].money = this.bet_content.firstToFifthBall.fourthBall.half[k];
+          }
+          else
+          {
+            //更新金钱加入到下注列表
+            this.back_data.push({
+              content: 'ball_4_half' + '__' + keys[k],
+              money: this.bet_content.firstToFifthBall.fourthBall.half[k]
+            });//添加到下注内容区
+          }
+          this.filter_same();
+        },
+
+
+        //第3球的下注内容
+        fifthBallBet: function (k)
+        {
+          let Alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];//组织数组  ball_1_digit
+          //这个下注内容的下注金额为 当前选中的金额
+          this.bet_content.firstToFifthBall.fifthBall.digit[k] =
+            this.bet_content.firstToFifthBall.fifthBall.digit[k] ?
+              this.bet_content.firstToFifthBall.fifthBall.digit[k] + this.bet_money :
+              this.bet_money;
+          //更新视图用的方法
+          this.bet_content.firstToFifthBall.fifthBall.digit.reverse().reverse();
+          let num = 0;
+          let f   = false;
+          for(let i=0;i<this.back_data.length;i++)
+          {
+            if(this.back_data[i].content == 'ball_5_digit' + '__' + Alphabet[k])
+            {
+              num = i;
+              f   = true;
+              break;
+            }
+          }
+          if(f)
+          {
+            //更新金钱
+            this.back_data[num].money = this.bet_content.firstToFifthBall.fifthBall.digit[k];
+          }
+          else
+          {
+            //更新金钱加入到下注列表
+            this.back_data.push({
+              content: 'ball_5_digit' + '__' + Alphabet[k],
+              money: this.bet_content.firstToFifthBall.fifthBall.digit[k]
+            });//添加到下注内容区
+
+          }
+          //过滤掉相同的数组
+          this.filter_same();
+        },
+
+        fifthBallBet2: function (k)
+        {
+          let keys = ['K', 'L', 'M', 'N'];//组织数组
+          //这个下注内容的下注金额为 当前选中的金额
+          this.bet_content.firstToFifthBall.fifthBall.half[k] =
+            this.bet_content.firstToFifthBall.fifthBall.half[k] ?
+              this.bet_content.firstToFifthBall.fifthBall.half[k] + this.bet_money :
+              this.bet_money;
+          //更新视图用的方法
+          this.bet_content.firstToFifthBall.fifthBall.half.reverse().reverse();
+          let num = 0;
+          let f   = false;
+          for(let i=0;i<this.back_data.length;i++)
+          {
+            if(this.back_data[i].content == 'ball_5_half' + '__' + keys[k])
+            {
+              num = i;
+              f   = true;
+              break;
+            }
+          }
+          if(f)
+          {
+            //更新金钱
+            this.back_data[num].money = this.bet_content.firstToFifthBall.fifthBall.half[k];
+          }
+          else
+          {
+            //更新金钱加入到下注列表
+            this.back_data.push({
+              content: 'ball_5_half' + '__' + keys[k],
+              money: this.bet_content.firstToFifthBall.fifthBall.half[k]
+            });//添加到下注内容区
+          }
+          this.filter_same();
+        },
+
+
+
 
 
         /**
@@ -1066,19 +1409,19 @@
         join_bet_list: function () {
           //清空下注内容
           this.data = [];
-
-          for (let i = 0; i < this.bets.length; i++) {
+          this.all_data = this.bets.concat(this.back_data);
+          for (let i = 0; i < this.all_data.length; i++) {
             //赔率
             let str = '';
             //下注内容的下标，对应可以找到下注内容的中文，和赔率
             //赔率
-            var index = this.dicrationaries.indexOf(this.bets[i].content);
+            var index = this.dicrationaries.indexOf(this.all_data[i].content);
             //是否趺倍，子盘才有的趺倍
             if(this.$store.state.son_off)
             {
-              if(this.is_dec(this.bets[i].content,this.bets[i].money))
+              if(this.is_dec(this.all_data[i].content,this.all_data[i].money))
               {
-                let odds = (Number(this.all_odds[index]) - Number(this.is_dec(this.bets[i].content,this.bets[i].money))).toFixed(4);
+                let odds = (Number(this.all_odds[index]) - Number(this.is_dec(this.all_data[i].content,this.all_data[i].money))).toFixed(4);
                 str += `${odds}`;
               }
               else
@@ -1094,13 +1437,13 @@
               content: this.dicrationaries_2[index],
               odds: str,
               odds2: 1.985,
-              money: this.bets[i].money,
+              money: this.all_data[i].money,
               fs: 0
             });
 
             //算下注的总金额
             let sumMoney = 0;
-            sumMoney += parseInt(this.bets[i].money);
+            sumMoney += parseInt(this.all_data[i].money);
           }
         },
 
@@ -1210,7 +1553,7 @@
             //更新视图层
             this.bet_content.ball_1_half.reverse().reverse();
         },
-
+        //获取最后一期的开奖号码
         get_last_code: function () {
           this.$http.get(this.api + '/ssc/lastLty', {}).then(function (res) {
             //获取到最新一期的数据
