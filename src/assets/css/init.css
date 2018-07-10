@@ -409,3 +409,34 @@ a:hover{
 {
   margin-right: 20px;
 }
+/*规则样式*/
+#des{
+  box-sizing: border-box;
+  /*padding-left: 3%;*/
+  width:96%;
+  margin:0 auto;
+}
+#des p{
+  word-wrap:break-word ;
+  white-space: normal;
+  text-align: left;
+  text-indent:2em;
+  line-height: 22px;
+  font-size: 0.9rem;
+}
+#des p.title,#des p.title_1{
+  font-size:1.1rem;
+  padding-bottom:.2rem;
+}
+/*#des div.sec_box{*/
+  /*margin-top: .5rem;*/
+  /*border:1px dashed #e8c77a;*/
+  /*border-radius: 5px;*/
+/*}*/
+#des p.title_1{
+  font-size: 1rem;
+  padding:.2rem 0;
+}
+
+
+
