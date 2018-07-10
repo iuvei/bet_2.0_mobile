@@ -2,23 +2,22 @@
 <template>
     <div id="diagram">
 
-        <div class="today">
+        <div class="today" v-for="(v,k) in data_list">
             <div class="today-left pull-left">
-                <div class="yy-sg">今日</div>
+                <div class="yy-sg">{{china_week[k]}}</div>
                 <div class="today-left-details" @click="turnUrl('diagram_details')">明细></div>
             </div>
-
           <div class="today-right pull-right">
-            <span class="block">盈亏： <span class="color-green">+100.00</span></span>
-            <span class="block">投注： <span class="color-red">100.00</span></span>
-            <span class="block">返水： <span class="color-green">+100.00</span></span>
-            <span class="block">中奖： <span class="color-green">+100.00</span></span>
-            <span class="block">充值： <span class="color-green">+100.00</span></span>
-            <span class="block">提现： <span class="color-red">+100.00</span></span>
+            <span class="block">盈亏： <span :class="get_sum(v,'win')>=0?'color-red':'color-green'">{{get_sum(v,'win')>=0?'+':'-'}}{{get_sum(v,'win')}}</span></span>
+            <span class="block">投注： <span class="color-red">{{get_sum(v,'order_num')}}</span></span>
+            <span class="block">返水： <span class="color-red">{{get_sum(v,'fs')}}</span></span>
+            <span class="block">中奖： <span :class="get_sum(v,'sum_money')>=0?'color-red':'color-green'">{{get_sum(v,'sum_money')>=0?'+':'-'}}{{get_sum(v,'sum_money')}}</span></span>
+            <!--<span class="block">充值： <span class="color-green">+100.00</span></span>-->
+            <!--<span class="block">提现： <span class="color-red">+100.00</span></span>-->
           </div>
         </div>
 
-
+<!--
       <div class="today">
         <div class="today-left pull-left">
           <div class="yy-sg">本周</div>
@@ -34,23 +33,9 @@
           <span class="block">提现： <span class="color-red">+100.00</span></span>
         </div>
       </div>
+-->
 
 
-      <div class="today">
-        <div class="today-left pull-left">
-          <div class="yy-sg">本月</div>
-          <div class="today-left-details" @click="turnUrl('diagram_details')" >明细></div>
-        </div>
-
-        <div class="today-right pull-right">
-          <span class="block">盈亏： <span class="color-green">+100.00</span></span>
-          <span class="block">投注： <span class="color-red">100.00</span></span>
-          <span class="block">返水： <span class="color-green">+100.00</span></span>
-          <span class="block">中奖： <span class="color-green">+100.00</span></span>
-          <span class="block">充值： <span class="color-green">+100.00</span></span>
-          <span class="block">提现： <span class="color-red">+100.00</span></span>
-        </div>
-      </div>
 
 
     </div>
@@ -59,7 +44,40 @@
 <script>
     export default
     {
-        name: "DiagramClear"
+        name: "DiagramClear",
+      data(){
+          return{
+            data:[],//全部数据
+            data_list:[],
+            china_week:['上周','本周','本月'],
+          }
+      },
+      methods:{
+        //  获取初始化数据
+        get_all_data:function(){
+          this.$http.get(this.api + '/clearList').then(function(res){
+            // console.log(res);
+            if(res.status == 200){
+              this.data = res.data.data;
+              for(var i in this.data){
+                this.data_list.push(this.data[i]);
+              }
+              console.log(this.data_list);
+            }
+          })
+        },
+        //累计、合计
+        get_sum:function(arr,type){
+            let sum = 0;
+            for(let i=0;i<arr.length;i++){
+              sum+=arr[i].sum_data[type];
+            }
+            return sum;
+        }
+      },
+      created(){
+          this.get_all_data();
+      }
     }
 </script>
 
