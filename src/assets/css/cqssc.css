@@ -174,8 +174,22 @@ td
   padding-left: 1rem;
   text-align: left;
   overflow: hidden;
+  position: relative;
 }
+.choose-handicaps
+{
+  position: absolute;
+  right:0.2rem;
+  bottom:1rem;
 
+}
+#handicaps
+{
+  -webkit-border-radius: 0.3rem;
+  -moz-border-radius: 0.3rem;
+  border-radius: 0.3rem;
+
+}
 .pre-expect {
   height: 20px;
   line-height: 20px;

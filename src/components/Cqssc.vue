@@ -14,6 +14,16 @@
         <span>{{$store.state.cqssc.thisExpect}}</span> &nbsp;&nbsp;
         <span>{{$store.state.cqssc.open_time<60?'准备开盘':'距离封盘'}} ：{{$store.state.cqssc.hours}}:{{$store.state.cqssc.minute}}:{{$store.state.cqssc.seconds}}</span>
       </div>
+
+      <div class="choose-handicaps">
+        <select name="handicaps" id="handicaps" v-model="which_handicap">
+          <option v-for="(v,k) in handicaps" v-bind:value="v.ratewin_name">
+            {{return_upper(v.ratewin_name)}}盘
+            <span class="pull-right chongtian" >返水{{return_percent(fanshui)}}</span>
+          </option>
+
+        </select>
+      </div>
     </div>
     <!--/头部-->
 
@@ -349,7 +359,12 @@
             <span style="width: 2.4rem;text-align: left;">{{v.odds}}</span>
             <span class="color-white bet-one-money">￥{{v.money}}</span>
             <span>返{{v.fs}}</span>
-            <span class="pull-right mr10 color-red" style="margin-right: 25px;">X</span></li>
+            <span
+              class="pull-right mr10 color-red"
+              style="margin-right: 25px;"
+              @click="delete_one(v.which,v.money,k)">X</span>
+
+          </li>
         </ul>
       </div>
 
@@ -1406,11 +1421,13 @@
 
 
         //加入到下注列表中
-        join_bet_list: function () {
+        join_bet_list: function ()
+        {
           //清空下注内容
           this.data = [];
           this.all_data = this.bets.concat(this.back_data);
-          for (let i = 0; i < this.all_data.length; i++) {
+          for (let i = 0; i < this.all_data.length; i++)
+          {
             //赔率
             let str = '';
             //下注内容的下标，对应可以找到下注内容的中文，和赔率
@@ -1438,7 +1455,8 @@
               odds: str,
               odds2: 1.985,
               money: this.all_data[i].money,
-              fs: 0
+              fs: 0,
+              which:this.all_data[i].content,
             });
 
             //算下注的总金额
@@ -1447,6 +1465,25 @@
           }
         },
 
+
+        //从下注列表中删除一个下注内容
+        delete_one(content,money,data_index)
+        {
+
+          let index = null;
+          for(let i = 0; i < this.all_data.length;i++)
+          {
+            if(content == this.all_data[i].content && money == this.all_data[i].money)
+            {
+                index = i;
+                break;
+            }
+          }
+          this.all_data.splice(index,1);
+          this.data.splice(data_index,1);
+          return 0;
+
+        },
 
         //过滤掉相同的数组
         filter_same: function () {
@@ -1552,10 +1589,14 @@
             },
             //更新视图层
             this.bet_content.ball_1_half.reverse().reverse();
+
+          this.all_data = [];
+          this.data = [];
         },
         //获取最后一期的开奖号码
-        get_last_code: function () {
-          this.$http.get(this.api + '/ssc/lastLty', {}).then(function (res) {
+        get_last_code: function ()
+        {
+            this.$http.get(this.api + '/ssc/lastLty', {}).then(function (res) {
             //获取到最新一期的数据
             let data = res.data;
             this.lastOpenCode = data.opencode;
@@ -1565,9 +1606,17 @@
 
 
         //向服务器提交下注内容
-        post_bet_data() {
-          this.$http.post(`${this.api}/ssc/order`, {bets: this.bets, odds_table: 'a'}).then(function (res) {
-            if (res.data.status == 200) {
+        post_bet_data()
+        {
+          if(this.all_data.length <1)
+          {
+            this.$toast({message: '请选择下注内容'});
+            return false;
+          }
+          this.$http.post(`${this.api}/ssc/order`, {bets: this.all_data, odds_table: this.which_handicap}).then(function (res)
+          {
+            if (res.data.status == 200)
+            {
               //清除下注内容
               this.reset();
               //从服务器上获取余额
@@ -1578,12 +1627,26 @@
 
               //提示下注成功
               this.$toast({message: res.data.msg});
+              this.data = [];
             }
             else {
               this.$toast({message: res.data.msg});
             }
 
           });
+        },
+
+
+
+
+
+        return_percent:function(str)
+        {
+          return str;
+        },
+        return_upper:function(str)
+        {
+          return str.toUpperCase();
         },
 
 
