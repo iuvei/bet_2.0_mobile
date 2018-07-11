@@ -9,7 +9,7 @@
             </div>
           <div class="today-right pull-right">
             <span class="block">盈亏： <span :class="get_sum(v,'win')>=0?'color-red':'color-green'">{{get_sum(v,'win')>=0?'+':'-'}}{{get_sum(v,'win')}}</span></span>
-            <span class="block">投注： <span class="color-red">{{get_sum(v,'order_num')}}</span></span>
+            <span class="block">投注： <span class="color-red">{{get_sum(v,'sum_money')}}</span></span>
             <span class="block">返水： <span class="color-red">{{get_sum(v,'fs')}}</span></span>
             <span class="block">中奖： <span :class="get_sum(v,'sum_money')>=0?'color-red':'color-green'">{{get_sum(v,'sum_money')>=0?'+':'-'}}{{get_sum(v,'sum_money')}}</span></span>
             <!--<span class="block">充值： <span class="color-green">+100.00</span></span>-->

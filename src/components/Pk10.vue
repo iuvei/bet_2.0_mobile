@@ -33,7 +33,7 @@
            <span class="bet-details mr2"
                  v-for="(val,key) in v.data"
            >
-                    <b v-if="key < 6">{{v.name}} {{val}}  <i>{{odds.double_aspect['ball_' + (k+1) + '_half'][keys1[key]]}}</i></b>
+                    <b v-if="k < 6">{{v.name}} {{val}}  <i>{{odds.double_aspect['ball_' + (k+1) + '_half'][keys1[key]]}}</i></b>
                     <b v-else >{{v.name}} {{val}}  <i>{{odds.double_aspect['ball_' + (k+1) + '_half'][keys2[key]]}}</i></b>
 
             </span>
@@ -46,14 +46,9 @@
        <ul v-show="isShowThisDiv[1]">
          <li v-for="(v,k) in single_ball_data">
            <h2 class="title">{{v.name}}</h2>
-           <span class="bet-details mr2"
-                 v-for="(val,key) in v.data"
-
-           >
-                    <b>{{v.name}} {{val}}  <i>{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i></b>
-
-                </span>
-
+           <span class="bet-details mr2" v-for="(val,key) in v.data">
+             <b>{{v.name}} {{val}}  <i>{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i></b>
+           </span>
          </li>
        </ul>
 
@@ -62,85 +57,84 @@
          <li v-for="(v,k) in firstAndSecond">
            <h2 class="title">{{v.name}}</h2>
            <span class="bet-details mr2" v-for="(val,key) in v.data">
-             <b>{{v.name}} {{val}}  <i>{{odds.sum_digit[keys4[key]]}}</i></b>
+             <b v-if="k<1">{{v.name}} {{val}}  <i>{{odds.sum_digit[keys4[key]]}}</i></b>
+             <b v-else >{{v.name}}  {{val}} <i>{{odds.sum_half[keys5[key]]}}</i></b>
            </span>
-
          </li>
        </ul>
-
 
        <!--冠、亚军-->
        <ul v-show="isShowThisDiv[3]">
          <li v-for="(v,k) in first_second">
            <h2 class="title">{{v.name}}</h2>
-           <span class="bet-details mr2"
-                 v-for="(val,key) in v.data"
-           >
-                    <b>{{v.name}} {{val}}  <i>1.943</i></b>
-
-                </span>
-
+           <span class="bet-details mr2" v-for="(val,key) in v.data">
+             <b>{{v.name}} {{val}}
+               <i v-if="k==0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k == 1">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+               <i v-if="k == 2">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k == 3">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+             </b>
+           </span>
          </li>
        </ul>
-
 
        <!--3、4名-->
        <ul v-show="isShowThisDiv[4]">
          <li v-for="(v,k) in third_fourth">
            <h2 class="title">{{v.name}}</h2>
-           <span class="bet-details mr2"
-                 v-for="(val,key) in v.data"
-           >
-                    <b>{{v.name}} {{val}}  <i>1.943</i></b>
-
-                </span>
-
+           <span class="bet-details mr2" v-for="(val,key) in v.data">
+              <b>{{v.name}} {{val}}
+               <i v-if="k==0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k == 1">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+               <i v-if="k == 2">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k == 3">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+             </b>
+           </span>
          </li>
        </ul>
-
 
        <!--5、6名-->
        <ul v-show="isShowThisDiv[5]">
          <li v-for="(v,k) in fifth_sixth">
            <h2 class="title">{{v.name}}</h2>
-           <span class="bet-details mr2"
-                 v-for="(val,key) in v.data"
-           >
-                    <b>{{v.name}} {{val}}  <i>1.943</i></b>
-
-                </span>
-
+           <span class="bet-details mr2" v-for="(val,key) in v.data">
+            <b>{{v.name}} {{val}}
+               <i v-if="k==0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k == 1">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+               <i v-if="k == 2">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k == 3">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+             </b>
+           </span>
          </li>
        </ul>
-
 
        <!--7、8名-->
        <ul v-show="isShowThisDiv[6]">
          <li v-for="(v,k) in seventh_eighth">
            <h2 class="title">{{v.name}}</h2>
-           <span class="bet-details mr2"
-                 v-for="(val,key) in v.data"
-           >
-                    <b>{{v.name}} {{val}}  <i>1.943</i></b>
-
-                </span>
-
+           <span class="bet-details mr2" v-for="(val,key) in v.data">
+             <b>{{v.name}} {{val}}
+               <i v-if="k==0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k == 1">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+               <i v-if="k == 2">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k == 3">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+             </b>
+           </span>
          </li>
        </ul>
-
-
 
        <!--9、10名-->
        <ul v-show="isShowThisDiv[7]">
          <li v-for="(v,k) in ninth_tenth">
            <h2 class="title">{{v.name}}</h2>
-           <span class="bet-details mr2"
-                 v-for="(val,key) in v.data"
-           >
-                    <b>{{v.name}} {{val}}  <i>1.943</i></b>
-
-                </span>
-
+           <span class="bet-details mr2" v-for="(val,key) in v.data">
+             <b>{{v.name}} {{val}}
+               <i v-if="k==0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k == 1">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+               <i v-if="k == 2">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k == 3">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+             </b>
+           </span>
          </li>
        </ul>
 
@@ -290,8 +284,8 @@
                 'ball_9_half':{'K':0,},
                 'ball_10_half':{'K':0,},
               },
-              sum_digit:{},
-              sum_half:{},
+              sum_digit:{},//冠亚军和 特码赔率数组
+              sum_half:{}, //冠亚军和 两面
             },
             //下注金额
             bets:
@@ -452,11 +446,12 @@
                 sum_digit:{},
             },
 
-            //keys1
+            //keys1 两面盘前五 double_aspect 对应的数据double_aspect:{a:0,b:0}
             keys1 : ['K','L','M','N','O','P'],
             keys2 : ['K','L','M','N'],
             keys3:['A','B','C','D','E','F','G','H','I','J'],
             keys4:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q'],
+            keys5:['A','B','C','D'],
 
 
           };
@@ -512,8 +507,10 @@
             {
               this.$http.get(`${this.api}/pk10/odds/1?pan=${which_handicap?which_handicap:this.which_handicap}`).then(function(res)
               {
+                //每个名次中每个球的赔率
                 let data = res.data.data.odds;
                 this.odds.single_ball = data;
+                // console.log(this.odds.single_ball);
                 let Alphabet = ['A','B','C','D','E','F','G','H','I','J'];
                 for(let i=0;i<Alphabet.length;i++)
                 {
@@ -533,6 +530,7 @@
               });
               this.$http.get(`${this.api}/pk10/odds/2?pan=${which_handicap?which_handicap:this.which_handicap}`).then(function(res)
               {
+                //两面盘赔率
                 let data = res.data.data.odds;
                 this.odds.double_aspect = data;
                 let Alphabet = ['K','L','M','N','O','P'];
@@ -562,12 +560,9 @@
               });
               this.$http.get(`${this.api}/pk10/odds/3?pan=${which_handicap?which_handicap:this.which_handicap}`).then(function(res)
               {
+                //冠亚军特码及 两面赔率
                 let data = res.data.data.odds;
                 this.odds.sum_digit = data.sum_digit;
-                console.log(this.odds.sum_digit);
-                for(let i in this.odds.sum_digit){
-
-                }
                 this.odds.sum_half = data.sum_half;
                 this.dec_limit.sum_digit = data.sum_digit.dec_odds;
                 this.dec_limit.sum_half = data.sum_half.dec_odds;

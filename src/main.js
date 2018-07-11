@@ -89,6 +89,7 @@ var store = new vuex.Store(
           open_codes:[1,2,3,4,5],//最后一期的开奖号码
           bingo_money:0,//中奖金额
           lastExpect:20180808,//上期的期数
+          // hour:'00',
           minute:'00',
           seconds:'00',
           thisExpect:20180808,//这期的下注期数

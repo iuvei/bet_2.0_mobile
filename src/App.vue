@@ -61,7 +61,8 @@ export default {
     return{
         selected:1,
         timeIdCqssc:1,//cqssc的倒计时的id
-        timeIdPk10:2//pk10的倒计时的id
+        timeIdPk10:2,//pk10的倒计时的id
+        timeIdPcegg:3,//pcegg的倒计时id
     }
   },
   methods:
@@ -184,8 +185,6 @@ export default {
       },
 
 
-
-
     //pk10的时间
     get_pk10_time()
     {
@@ -258,7 +257,78 @@ export default {
       //开盘倒计时
     },
 
+    //pcegg的时间
+    get_egg_time()
+    {
+      this.$http.get(`${this.api}/egg/time`).then(function(res){
+        let data = res.data;
+        // console.log(res);
+        //this.sales_ = data.saleNum;//已卖期数
+        this.$store.state.egg.end_time = data.endtime;//这期的封盘时间
+        this.$store.state.egg.open_time = data.opentime;//下期的开盘时间
+        this.$store.state.egg.thisExpect = data.expect;//这期下注期数
+        this.count_down_pcegg();
+      });
+    },
+    count_down_pcegg:function ()
+    {
+      let that  = this;
+      //封盘倒计时
+      this.timeIdPcegg = setInterval(function()
+      {
+        that.$store.state.egg.hours = '00';
+        if(that.$store.state.egg.end_time <= 0)
+        {
+          that.$store.state.egg.minute = '00';
+          that.$store.state.egg.seconds = that.$store.state.egg.open_time<10?('0' + that.$store.state.egg.open_time.toString()):that.$store.state.egg.open_time;
+          that.$store.state.egg.open_state = false;
+          if(that.$store.state.egg.end_time == 0)
+          {
+            that.thisExpect = parseInt(that.thisExpect) + 1;
+          }
+          if(that.$store.state.egg.open_time <= 0 )
+          {
+            if(that.$store.state.egg.open_time < -100)
+            {
+              that.$store.state.egg.hours = Math.floor(-that.$store.state.egg.open_time/(60*60));
+              let hours = Math.floor(-that.$store.state.egg.open_time/(60*60));
+              that.$store.state.egg.hours = that.$store.state.egg.hours == 0 ? '00': ('0' + that.$store.state.egg.hours.toString());
+              that.$store.state.egg.minute = Math.floor((-that.$store.state.egg.open_time - (hours * 3600)) / 60)
+              that.$store.state.egg.seconds = Math.floor((-that.$store.state.egg.open_time)%60 );
+            }
+            if(that.$store.state.egg.open_time == 0)
+            {
+              //清除定时器
+              clearInterval(that.timeIdegg);
+              //重新获取时间
+              that.get_egg_time();
+              that.$store.state.egg.open_state = true;
+            }
+            else
+            {
+              that.$store.state.egg.open_time++
+            }
+            return;
+          }
+        }
+        else
+        {
 
+          let mins = Math.floor(that.$store.state.egg.end_time/60);
+          mins = '0' + mins;
+          that.$store.state.egg.minute = mins;
+          let seconds = Math.abs(Math.floor(that.$store.state.egg.end_time%60));
+          seconds  = seconds>9?seconds:('0'+seconds);
+          that.$store.state.egg.seconds = seconds;
+          that.$store.state.egg.open_state = true;
+        }
+
+        that.$store.state.egg.end_time--;
+        that.$store.state.egg.open_time--;
+
+      },1000);
+      //开盘倒计时
+    },
   },
   created()
   {
@@ -266,7 +336,7 @@ export default {
     this.get_cqssc_time();
 
     this.get_pk10_time();
-
+    this.get_egg_time();
   },
   watch:
   {

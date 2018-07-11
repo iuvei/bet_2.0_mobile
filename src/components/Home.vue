@@ -59,7 +59,7 @@
                 </div>
 
                 <div class="baijiale1">
-                    <div class="bjls bgbg">
+                    <div class="bjls bgbg" @click="turnTo('Pcegg')">
                         <img src="../assets/img/icon_lhc.png" alt="" style="width: 35px;margin-left: 10px;">
                         <div style="margin-left: 5px;">PC蛋蛋</div>
                     </div>
