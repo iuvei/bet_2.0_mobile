@@ -198,7 +198,7 @@ td
 .balls {
   width: 20px;
   height: 20px;
-  background: red;
+  /*background: red;*/
   color: #fff;
   display: block;
   float: left;

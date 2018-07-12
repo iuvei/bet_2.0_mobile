@@ -35,9 +35,8 @@
            <span class="bet-details mr2"
                  v-for="(val,key) in v.data"
                  @click="bet_db(k,key)"
-                 :class="addActiveClass('double_aspect','ball_' + (k+1) + '_half__' + keys1[key])"
+                :class="addActiveClass('double_aspect','ball_' + (k+1) + '_half__' + keys1[key])"
            >
-
                     <b v-if="k < 6">{{v.name}} {{val}}  <i>{{odds.double_aspect['ball_' + (k+1) + '_half'][keys1[key]]}}</i></b>
                     <b v-else >{{v.name}} {{val}}  <i>{{odds.double_aspect['ball_' + (k+1) + '_half'][keys2[key]]}}</i></b>
                     <i class="ml5 color-white mr2"
@@ -58,7 +57,7 @@
            <span class="bet-details mr2"
                  v-for="(val,key) in v.data"
                  @click="bet_num(k,key)"
-                 :class="addActiveClass('numb','ball_'+(k+1)+'_digit__'+ keys3[key])"
+                  :class="addActiveClass('numb','ball_'+(k+1)+'_digit__'+ keys3[key])"
            >
              <b>{{v.name}} {{val}}  <i>{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i></b>
              <i class="ml5 color-white mr2"
@@ -94,14 +93,35 @@
        <ul v-show="isShowThisDiv[3]">
          <li v-for="(v,k) in first_second">
            <h2 class="title">{{v.name}}</h2>
+           <!--冠军、亚军 特码-->
            <span class="bet-details mr2" v-for="(val,key) in v.data"
-                 @click="first_and_second(k,key)"
-                 :class="addActiveClass('first_second','ball_'+(k+1)+str_arr[k]+keys3[key])"
+                 @click="first_and_second(k,key,'first_second',num)"
+                 v-if="k%2 == 0"
+                 :class="addActiveClass('first_second','ball_'+num[k]+str_arr[k]+keys3[key])"
            >
              <b>{{v.name}} {{val}}
-               <i v-if="k%2 == 0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k%2 != 0">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+               <i>{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
              </b>
+             <i class="ml5 color-white mr2"
+                v-show="howMuch('first_second','ball_'+num[k]+str_arr[k]+keys3[key])"
+             >
+                          ￥{{howMuch('first_second','ball_'+num[k]+str_arr[k]+keys3[key])}}
+                    </i>
+           </span>
+           <!--冠军、亚军 大小单双龙虎-->
+           <span class="bet-details mr2" v-for="(val,key) in v.data"
+                 @click="first_and_second(k,key,'first_second',num)"
+                 v-if="k%2 != 0"
+                 :class="addActiveClass('first_second','ball_'+num[k]+str_arr[k]+keys1[key])"
+           >
+             <b>{{v.name}} {{val}}
+               <i>{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+             </b>
+             <i class="ml5 color-white mr2"
+                v-show="howMuch('first_second','ball_'+num[k]+str_arr[k]+keys1[key])"
+             >
+                          ￥{{howMuch('first_second','ball_'+num[k]+str_arr[k]+keys1[key])}}
+                    </i>
            </span>
          </li>
        </ul>
@@ -110,11 +130,35 @@
        <ul v-show="isShowThisDiv[4]">
          <li v-for="(v,k) in third_fourth">
            <h2 class="title">{{v.name}}</h2>
-           <span class="bet-details mr2" v-for="(val,key) in v.data">
+           <!--3、 4 特码-->
+           <span class="bet-details mr2" v-for="(val,key) in v.data"
+                 @click="first_and_second(k,key,'third_fourth',num1)"
+                 v-if="k%2 == 0"
+                 :class="addActiveClass('third_fourth','ball_'+num1[k]+str_arr[k]+keys3[key])"
+           >
               <b>{{v.name}} {{val}}
-               <i v-if="k%2 == 0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k%2 != 0">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+               <i>{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
              </b>
+             <i class="ml5 color-white mr2"
+                v-show="howMuch('third_fourth','ball_'+num1[k]+str_arr[k]+keys3[key])"
+             >
+                          ￥{{howMuch('third_fourth','ball_'+num1[k]+str_arr[k]+keys3[key])}}
+                    </i>
+           </span>
+           <!--3、4龙虎-->
+           <span class="bet-details mr2" v-for="(val,key) in v.data"
+                 @click="first_and_second(k,key,'third_fourth',num1)"
+                 v-if="k%2 != 0"
+                 :class="addActiveClass('third_fourth','ball_'+num1[k]+str_arr[k]+keys1[key])"
+           >
+              <b>{{v.name}} {{val}}
+               <i>{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+             </b>
+             <i class="ml5 color-white mr2"
+                v-show="howMuch('third_fourth','ball_'+num1[k]+str_arr[k]+keys1[key])"
+             >
+                          ￥{{howMuch('third_fourth','ball_'+num1[k]+str_arr[k]+keys1[key])}}
+                    </i>
            </span>
          </li>
        </ul>
@@ -123,11 +167,35 @@
        <ul v-show="isShowThisDiv[5]">
          <li v-for="(v,k) in fifth_sixth">
            <h2 class="title">{{v.name}}</h2>
-           <span class="bet-details mr2" v-for="(val,key) in v.data">
-            <b>{{v.name}} {{val}}
-               <i v-if="k%2 == 0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k%2 != 0">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+           <!--5、6 特码-->
+           <span class="bet-details mr2" v-for="(val,key) in v.data"
+                 @click="first_and_second(k,key,'fifth_sixth',num2)"
+                 v-if="k%2 == 0"
+                 :class="addActiveClass('fifth_sixth','ball_'+num2[k]+str_arr[k]+keys3[key])"
+           >
+              <b>{{v.name}} {{val}}
+               <i>{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
              </b>
+             <i class="ml5 color-white mr2"
+                v-show="howMuch('fifth_sixth','ball_'+num2[k]+str_arr[k]+keys3[key])"
+             >
+                          ￥{{howMuch('fifth_sixth','ball_'+num2[k]+str_arr[k]+keys3[key])}}
+                    </i>
+           </span>
+           <!--5、6大小-->
+           <span class="bet-details mr2" v-for="(val,key) in v.data"
+                 @click="first_and_second(k,key,'fifth_sixth',num2)"
+                 v-if="k%2 != 0"
+                 :class="addActiveClass('fifth_sixth','ball_'+num2[k]+str_arr[k]+keys1[key])"
+           >
+              <b>{{v.name}} {{val}}
+               <i>{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+             </b>
+             <i class="ml5 color-white mr2"
+                v-show="howMuch('fifth_sixth','ball_'+num2[k]+str_arr[k]+keys1[key])"
+             >
+                          ￥{{howMuch('fifth_sixth','ball_'+num2[k]+str_arr[k]+keys1[key])}}
+                    </i>
            </span>
          </li>
        </ul>
@@ -136,11 +204,35 @@
        <ul v-show="isShowThisDiv[6]">
          <li v-for="(v,k) in seventh_eighth">
            <h2 class="title">{{v.name}}</h2>
-           <span class="bet-details mr2" v-for="(val,key) in v.data">
-             <b>{{v.name}} {{val}}
-               <i v-if="k%2 == 0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k%2 != 0">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+           <!--7  8  特码-->
+           <span class="bet-details mr2" v-for="(val,key) in v.data"
+                 @click="first_and_second(k,key,'seventh_eighth',num3)"
+                 v-if="k%2 == 0"
+                 :class="addActiveClass('seventh_eighth','ball_'+num3[k]+str_arr[k]+keys3[key])"
+           >
+              <b>{{v.name}} {{val}}
+               <i>{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
              </b>
+             <i class="ml5 color-white mr2"
+                v-show="howMuch('seventh_eighth','ball_'+num3[k]+str_arr[k]+keys3[key])"
+             >
+                          ￥{{howMuch('seventh_eighth','ball_'+num3[k]+str_arr[k]+keys3[key])}}
+                    </i>
+           </span>
+           <!--7  8  单双-->
+           <span class="bet-details mr2" v-for="(val,key) in v.data"
+                 @click="first_and_second(k,key,'seventh_eighth',num3)"
+                 v-if="k%2 != 0"
+                 :class="addActiveClass('seventh_eighth','ball_'+num3[k]+str_arr[k]+keys1[key])"
+           >
+              <b>{{v.name}} {{val}}
+               <i>{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+             </b>
+             <i class="ml5 color-white mr2"
+                v-show="howMuch('seventh_eighth','ball_'+num3[k]+str_arr[k]+keys1[key])"
+             >
+                          ￥{{howMuch('seventh_eighth','ball_'+num3[k]+str_arr[k]+keys1[key])}}
+                    </i>
            </span>
          </li>
        </ul>
@@ -149,11 +241,35 @@
        <ul v-show="isShowThisDiv[7]">
          <li v-for="(v,k) in ninth_tenth">
            <h2 class="title">{{v.name}}</h2>
-           <span class="bet-details mr2" v-for="(val,key) in v.data">
-             <b>{{v.name}} {{val}}
-               <i v-if="k%2 == 0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k%2 != 0">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+           <!--8 9 特码-->
+           <span class="bet-details mr2" v-for="(val,key) in v.data"
+                 @click="first_and_second(k,key,'ninth_tenth',num4)"
+                 v-if="k%2 == 0"
+                 :class="addActiveClass('ninth_tenth','ball_'+num4[k]+str_arr[k]+keys3[key])"
+           >
+              <b>{{v.name}} {{val}}
+               <i>{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
              </b>
+             <i class="ml5 color-white mr2"
+                v-show="howMuch('ninth_tenth','ball_'+num4[k]+str_arr[k]+keys3[key])"
+             >
+                          ￥{{howMuch('ninth_tenth','ball_'+num4[k]+str_arr[k]+keys3[key])}}
+                    </i>
+           </span>
+           <!--9 10 单双-->
+           <span class="bet-details mr2" v-for="(val,key) in v.data"
+                 @click="first_and_second(k,key,'ninth_tenth',num4)"
+                 v-if="k%2 != 0"
+                 :class="addActiveClass('ninth_tenth','ball_'+num4[k]+str_arr[k]+keys1[key])"
+           >
+              <b>{{v.name}} {{val}}
+               <i>{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+             </b>
+             <i class="ml5 color-white mr2"
+                v-show="howMuch('ninth_tenth','ball_'+num4[k]+str_arr[k]+keys1[key])"
+             >
+                          ￥{{howMuch('ninth_tenth','ball_'+num4[k]+str_arr[k]+keys1[key])}}
+                    </i>
            </span>
          </li>
        </ul>
@@ -533,6 +649,11 @@
             outSide: false,//右侧投注列表是否显示（false：隐藏；true:显示）
             timeId1:0,//打开  隐藏的动画
             str_arr:['_digit__','_half__','_digit__','_half__'],//用户选择的是特码  还是 两面数组
+            num:[1,1,2,2],//冠亚军 ==>first_second
+            num1:[3,3,4,4],//3、4 ==>third_fourth
+            num2:[5,5,6,6],//5、6  ==>fifth_sixth
+            num3:[7,7,8,8],//7  8 ====>seventh_eighth
+            num4:[9,9,10,10], //9 10 ==>ninth_tenth
           };
           return data;
         },
@@ -712,6 +833,7 @@
             // console.log(key);
             for(let i = 0; i < this.all_bets[type].length;i++)
             {
+              // console.log(this.all_bets[type][i].content);
               if( this.all_bets[type][i].content == key )
               {
                 return 'active';
@@ -841,13 +963,7 @@
             return;
           },
           /*******************冠、亚下注*********/
-          first_and_second(k,k2){
-            var s =k;
-            if(k <= 1){
-              s=0
-            }else{
-              s=1
-            }
+          first_and_second(k,k2,type,arr){
             var index = null;
             var money = this.bet_money;
             var flag = false;
@@ -855,30 +971,30 @@
             var key = ['K','L','M','N','O','P']; // 两面后缀
             var str='';
             if(k%2 == 0){
-              str='ball_'+(s+1)+this.str_arr[k]+key2[k2];
+              str='ball_'+arr[k]+this.str_arr[k]+key2[k2];
             }else{
-              str='ball_'+(s+1)+this.str_arr[k]+key[k2];
+              str='ball_'+arr[k]+this.str_arr[k]+key[k2];
             }
-            for(var i=0;i<this.all_bets.first_second.length;i++){
-              if(this.all_bets.first_second[i].content == str){
+            for(var i=0;i<this.all_bets[type].length;i++){
+              if(this.all_bets[type][i].content == str){
                 index = i;
-                money = this.all_bets.first_second[i].money + this.bet_money;
+                money = this.all_bets[type][i].money + this.bet_money;
                 flag = true;
                 break;
               }
             }
             if(flag){
-              this.all_bets.first_second[index].money = money;
+              this.all_bets[type][index].money = money;
             }else{
               var data = {
                 content:str,
                 money:money,
               };
-              this.all_bets.first_second.push(data);
+              this.all_bets[type].push(data);
             }
             // console.log(flag);
-            // console.log(this.all_bets.first_second);
-            // console.log(str);
+            // console.log(this.all_bets[type]);
+            console.log(str);
           },
           /*************加入到下注大列表*********************/
           addToBetDataList()
