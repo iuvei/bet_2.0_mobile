@@ -35,17 +35,15 @@
            <span class="bet-details mr2"
                  v-for="(val,key) in v.data"
                  @click="bet_db(k,key)"
-                 :class="addActiveClass('ball_' + (k+1) + '_half__' + keys1[key])"
+                 :class="addActiveClass('double_aspect','ball_' + (k+1) + '_half__' + keys1[key])"
            >
+
                     <b v-if="k < 6">{{v.name}} {{val}}  <i>{{odds.double_aspect['ball_' + (k+1) + '_half'][keys1[key]]}}</i></b>
                     <b v-else >{{v.name}} {{val}}  <i>{{odds.double_aspect['ball_' + (k+1) + '_half'][keys2[key]]}}</i></b>
-
-
-
                     <i class="ml5 color-white mr2"
-                        v-show="howMuch('ball_' + (k+1) + '_half__' + keys1[key])"
+                        v-show="howMuch('double_aspect','ball_' + (k+1) + '_half__' + keys1[key])"
                     >
-                          ￥{{howMuch('ball_' + (k+1) + '_half__' + keys1[key])}}
+                          ￥{{howMuch('double_aspect','ball_' + (k+1) + '_half__' + keys1[key])}}
                     </i>
             </span>
 
@@ -57,8 +55,17 @@
        <ul v-show="isShowThisDiv[1]">
          <li v-for="(v,k) in single_ball_data">
            <h2 class="title">{{v.name}}</h2>
-           <span class="bet-details mr2" v-for="(val,key) in v.data">
+           <span class="bet-details mr2"
+                 v-for="(val,key) in v.data"
+                 @click="bet_num(k,key)"
+                 :class="addActiveClass('numb','ball_'+(k+1)+'_digit__'+ keys3[key])"
+           >
              <b>{{v.name}} {{val}}  <i>{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i></b>
+             <i class="ml5 color-white mr2"
+                v-show="howMuch('numb','ball_' + (k+1) + '_digit__' + keys3[key])"
+             >
+                          ￥{{howMuch('numb','ball_' + (k+1) + '_digit__' + keys3[key])}}
+                    </i>
            </span>
          </li>
        </ul>
@@ -67,9 +74,18 @@
        <ul v-show="isShowThisDiv[2]">
          <li v-for="(v,k) in firstAndSecond">
            <h2 class="title">{{v.name}}</h2>
-           <span class="bet-details mr2" v-for="(val,key) in v.data">
+           <span class="bet-details mr2"
+                 v-for="(val,key) in v.data"
+                 @click="first_all_second(k,key)"
+                 :class="addActiveClass('firstAndSecond','sum'+str_arr[k]+keys4[key])"
+           >
              <b v-if="k<1">{{v.name}} {{val}}  <i>{{odds.sum_digit[keys4[key]]}}</i></b>
-             <b v-else >{{v.name}}  {{val}} <i>{{odds.sum_half[keys5[key]]}}</i></b>
+             <b v-else >{{v.name}}  {{val}} <i>{{odds.sum_half[keys4[key]]}}</i></b>
+             <i class="ml5 color-white mr2"
+                v-show="howMuch('firstAndSecond','sum'+str_arr[k]+keys4[key])"
+             >
+                          ￥{{howMuch('firstAndSecond','sum'+str_arr[k]+keys4[key])}}
+                    </i>
            </span>
          </li>
        </ul>
@@ -78,12 +94,13 @@
        <ul v-show="isShowThisDiv[3]">
          <li v-for="(v,k) in first_second">
            <h2 class="title">{{v.name}}</h2>
-           <span class="bet-details mr2" v-for="(val,key) in v.data">
+           <span class="bet-details mr2" v-for="(val,key) in v.data"
+                 @click="first_and_second(k,key)"
+                 :class="addActiveClass('first_second','ball_'+(k+1)+str_arr[k]+keys3[key])"
+           >
              <b>{{v.name}} {{val}}
-               <i v-if="k==0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k == 1">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
-               <i v-if="k == 2">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k == 3">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+               <i v-if="k%2 == 0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k%2 != 0">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
              </b>
            </span>
          </li>
@@ -95,10 +112,8 @@
            <h2 class="title">{{v.name}}</h2>
            <span class="bet-details mr2" v-for="(val,key) in v.data">
               <b>{{v.name}} {{val}}
-               <i v-if="k==0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k == 1">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
-               <i v-if="k == 2">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k == 3">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+               <i v-if="k%2 == 0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k%2 != 0">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
              </b>
            </span>
          </li>
@@ -110,10 +125,8 @@
            <h2 class="title">{{v.name}}</h2>
            <span class="bet-details mr2" v-for="(val,key) in v.data">
             <b>{{v.name}} {{val}}
-               <i v-if="k==0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k == 1">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
-               <i v-if="k == 2">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k == 3">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+               <i v-if="k%2 == 0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k%2 != 0">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
              </b>
            </span>
          </li>
@@ -125,10 +138,8 @@
            <h2 class="title">{{v.name}}</h2>
            <span class="bet-details mr2" v-for="(val,key) in v.data">
              <b>{{v.name}} {{val}}
-               <i v-if="k==0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k == 1">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
-               <i v-if="k == 2">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k == 3">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+               <i v-if="k%2 == 0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k%2 != 0">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
              </b>
            </span>
          </li>
@@ -140,10 +151,8 @@
            <h2 class="title">{{v.name}}</h2>
            <span class="bet-details mr2" v-for="(val,key) in v.data">
              <b>{{v.name}} {{val}}
-               <i v-if="k==0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k == 1">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
-               <i v-if="k == 2">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
-               <i v-if="k == 3">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
+               <i v-if="k%2 == 0">{{odds.single_ball['ball_'+(k+1)+'_digit'][keys3[key]]}}</i>
+               <i v-if="k%2 != 0">{{odds.double_aspect['ball_'+(k+1)+'_half'][keys1[key]]}}</i>
              </b>
            </span>
          </li>
@@ -243,7 +252,6 @@
               {name: "第九名", data: ['大', '小', '单', '双']},
               {name: "第十名", data: ['大', '小', '单', '双']},
             ],
-
             //数字盘数据
             single_ball_data:
             [
@@ -258,14 +266,12 @@
                 {name: "第九名", data: [1, 2, 3, 4, 5, 6, 7, 8, 9,10]},
                 {name: "第十名", data: [1, 2, 3, 4, 5, 6, 7, 8, 9,10]},
             ],
-
             //冠亚军组合
             firstAndSecond:
             [
               {name: "特码",   data: [3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19]},
               {name: "两面",   data: ['大', '小', '单', '双']},
             ],
-
             //冠、亚军
             first_second:
             [
@@ -288,30 +294,28 @@
               {name: "第五名特码",   data: [1, 2, 3, 4, 5, 6, 7, 8, 9,10]},
               {name: "第五名两面",   data: ['大', '小', '单', '双','龙','虎']},
               {name: "第六名特码",   data: [1, 2, 3, 4, 5, 6, 7, 8, 9,10]},
-              {name: "第六名两面",   data: ['大', '小', '单', '双','龙','虎']},
+              {name: "第六名两面",   data: ['大', '小', '单', '双']},
             ],
             //7、8名
             seventh_eighth:
             [
               {name: "第七名特码",   data: [1, 2, 3, 4, 5, 6, 7, 8, 9,10]},
-              {name: "第七名两面",   data: ['大', '小', '单', '双','龙','虎']},
+              {name: "第七名两面",   data: ['大', '小', '单', '双']},
               {name: "第八名特码",   data: [1, 2, 3, 4, 5, 6, 7, 8, 9,10]},
-              {name: "第八名两面",   data: ['大', '小', '单', '双','龙','虎']},
+              {name: "第八名两面",   data: ['大', '小', '单', '双']},
             ],
             //9、10名
             ninth_tenth:
               [
                 {name: "第九名特码",   data: [1, 2, 3, 4, 5, 6, 7, 8, 9,10]},
-                {name: "第九名两面",   data: ['大', '小', '单', '双','龙','虎']},
+                {name: "第九名两面",   data: ['大', '小', '单', '双']},
                 {name: "第十名特码",   data: [1, 2, 3, 4, 5, 6, 7, 8, 9,10]},
-                {name: "第十名两面",   data: ['大', '小', '单', '双','龙','虎']},
+                {name: "第十名两面",   data: ['大', '小', '单', '双']},
               ],
-
             handicaps:[],//用户已有的盘口
             which_handicap:'',//用户当前所选的盘口是哪个  a  b  c  d ...
             fanshui:0,
-
-            //下注的内容，赔率 金额 fs
+            //下注的内容，赔率 金额 fs  右侧下注列表展示
             data:
             [
               {content: "第一球单", odds: 1.9851, odds2: 1.985, money: 100, fs: 0},
@@ -320,11 +324,6 @@
               {content: "第四球单", odds: 1.9751, odds2: 1.985, money: 300, fs: 0},
               {content: "第五球单", odds: 1.9650, odds2: 1.985, money: 900000, fs: 0},
             ],
-
-
-
-
-
             //赔率
             odds:{
               single_ball:{
@@ -384,7 +383,7 @@
                 sum_digit:['','','','','','','','','','','','','','','','',''],
                 sum_half:['','','',''],
               },
-            bet_content:[],//下注内容的集合
+            bet_content:[],//子盘下注内容的集合
             //纯赔率列表
             all_odds:[],
             //参照表1
@@ -512,16 +511,13 @@
                 sum_half:{},
                 sum_digit:{},
             },
-
             //keys1 两面盘前五 double_aspect 对应的数据double_aspect:{a:0,b:0}
-            keys1 : ['K','L','M','N','O','P'],
-            keys2 : ['K','L','M','N'],
-            keys3:['A','B','C','D','E','F','G','H','I','J'],
-            keys4:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q'],
-            keys5:['A','B','C','D'],
+            keys1 : ['K','L','M','N','O','P'],//有龙虎的两面：大、小、单、双、龙、虎
+            keys2 : ['K','L','M','N'],//没有龙虎的两面：大、小、单、双
+            keys3:['A','B','C','D','E','F','G','H','I','J'],//球1--球10
+            keys4:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q'],//冠亚军总和 3--19
 
-
-            //下注合集
+            //每一个tab对应的下注合集
             all_bets :
             {
                double_aspect:[],
@@ -533,16 +529,10 @@
                seventh_eighth:[],
                ninth_tenth:[],
             },
-
-
             all:[],//所有要下注的内容原样合集，用于向服务器提交使用
-
-
-
-            outSide: false,
-            timeId1:0,
-
-
+            outSide: false,//右侧投注列表是否显示（false：隐藏；true:显示）
+            timeId1:0,//打开  隐藏的动画
+            str_arr:['_digit__','_half__','_digit__','_half__'],//用户选择的是特码  还是 两面数组
           };
           return data;
         },
@@ -557,7 +547,7 @@
             this.isActive[index] = 1;
             this.isShowThisDiv[index] = 1;
           },
-          //右边下注的
+          //右边下注的（弹框显示用户选中的相）
           test() {
             if (!this.outSide) {
               let BrowserHeight = document.body.clientWidth;
@@ -593,12 +583,9 @@
                   clearInterval(that.timeId1);
                   that.outSide = !that.outSide;
                 }
-
               }, 3);
               this.addToBetDataList();
             }
-
-
           },
 
           //获取最后一期的开奖号码
@@ -607,7 +594,7 @@
               //获取到最新一期的数据
               let data = res.data;
               this.lastOpenCode = data.opencode;
-              this.lastExpect = `${data.expect}`;
+              this.lastExpect = data.expect;
             });
           },
 
@@ -617,9 +604,8 @@
            * 查看用户可选盘口
            */
           get_users_handicaps: function () {
-            this.$http.get(`${this.api}/pk10/pans`)
+            this.$http.get(this.api+'/pk10/pans')
               .then(function (res) {
-
                 this.handicaps = [];
                 if (res.data.status == 200) {
                   for (let i = 0; i < res.data.data.ratelist.length; i++) {
@@ -712,45 +698,6 @@
             }
           },
 
-
-
-          post_bet_data()
-          {
-            if(this.all_data.length <1)
-            {
-              this.$toast({message: '请选择下注内容'});
-              return false;
-            }
-            this.$http.post(`${this.api}/pk10/order`, {bets: this.all_data, odds_table: this.which_handicap}).then(function (res)
-            {
-              if (res.data.status == 200)
-              {
-                //清除下注内容
-                this.reset();
-                //从服务器上获取余额
-                this.$http.get(this.api + "/user/" + window.sessionStorage.user_id).then(function (response) {
-                  let data = response.data.data.user;
-                  this.$set(this.$store.state, 'cash_money', data.money.cash_money)
-                });
-
-                //提示下注成功
-                this.$toast({message: res.data.msg});
-                this.data = [];
-              }
-              else {
-                this.$toast({message: res.data.msg});
-              }
-
-            });
-          },
-
-
-
-
-
-
-
-
           //改变下注金额
           changeBetMoney: function (money) {
             this.bet_money = money;
@@ -760,10 +707,39 @@
             this.bets = [];
 
           },
-
-          /*************两面盘下注*********************/
-          bet_db:function(k,k2)
+          //用户点击选项，添加class  active;
+          addActiveClass(type,key){
+            // console.log(key);
+            for(let i = 0; i < this.all_bets[type].length;i++)
+            {
+              if( this.all_bets[type][i].content == key )
+              {
+                return 'active';
+              }
+            }
+          },
+          //用户点击选项，显示金额
+          howMuch(type,key)
           {
+            for(let i = 0; i < this.all_bets[type].length;i++)
+            {
+              if( this.all_bets[type][i].content == key )
+              {
+
+                return this.all_bets[type][i].money;
+              }
+            }
+          },
+          /*
+          * 数字盘下注格式：ball_(1-10)_digit__(A-J)
+          * 两面盘下注格式：1-5名：(大小单双龙虎) ball_(1-5)_half__(K-P);  6-10:(大小单双) ball_(6-10)_half__(K-N)
+          * 冠亚军总和下注格式：sum_digit__(A-Q)(总和、特码)、、sum_half__(A-D)(大小单双)
+          *
+          * 单球 1-5名下注：特码：ball_(1-5)_digit__(A-J)   两面(大小单双龙虎)： ball_(1-5)_half__(K-P)
+          * 单球 6-10名下注：特码：  ball_(6-10)_digit__(A-J) ; 两面(大小单双)： ball_(6-10)_half__(K-N)
+          * */
+          /*************两面盘下注*********************/
+          bet_db:function(k,k2) {
             //判断用户是否对这个已有下注
             let index = null;
             let money  = this.bet_money;
@@ -804,40 +780,112 @@
             this.all_bets.double_aspect.reverse().reverse();
             return;
           },
-
-          addActiveClass(key)
-          {
-            for(let i = 0; i < this.all_bets.double_aspect.length;i++)
-            {
-              if( this.all_bets.double_aspect[i].content == key )
-              {
-
-                return 'active';
+          /*************数子盘下注*****************/
+          bet_num(k,k2){
+            let index = null;//重复点击的下标
+            let money  = this.bet_money;
+            let flag = false;//是否是第一次点击单项 false: 是 true重复点击
+            let key2  =  ['A','B','C','D','E','F','G','H','I','J'];
+            for(let i = 0;i<this.all_bets.numb.length;i++){
+              //判断是否重复点击(是的话只添加金额，不需push)
+              if(this.all_bets.numb[i].content == 'ball_' + (k+1) + '_digit__'+key2[k2]){
+                index = i;
+                money = this.all_bets.numb[index].money+this.bet_money;
+                flag=true;
+                break;
               }
             }
+            if(flag){
+              //不是第一次点击,重复
+              this.all_bets.numb[index].money = money;
+            }
+            else{
+              //第一次点击
+              let str = 'ball_' + (k+1) + '_digit__'+key2[k2];
+              let data={
+                content:str,
+                money:money,
+              };
+              this.all_bets.numb.push(data);
+            }
+            this.all_bets.numb.reverse().reverse();//绑定视图更新
+            return;
+
           },
-
-          howMuch(key)
-          {
-            for(let i = 0; i < this.all_bets.double_aspect.length;i++)
-            {
-              if( this.all_bets.double_aspect[i].content == key )
-              {
-
-                return this.all_bets.double_aspect[i].money;
+          /***************冠亚军和下注********/
+          first_all_second:function(k,k2){
+            var index = null;
+            var money = this.bet_money;
+            var flag = false;
+            var key2 = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q'];
+            for(var i = 0;i<this.all_bets.firstAndSecond.length;i++){
+              if(this.all_bets.firstAndSecond[i].content == 'sum'+this.str_arr[k]+key2[k2] ){
+                index = i;
+                flag = true;
+                money = this.all_bets.firstAndSecond[i].money + this.bet_money;
+                break;
               }
             }
+            if(flag){
+              this.all_bets.firstAndSecond[index].money = money;
+            }else{
+              var str = 'sum'+this.str_arr[k]+key2[k2];
+              var data = {
+                content:str,
+                money:money,
+              };
+              this.all_bets.firstAndSecond.push(data);
+            }
+            console.log(this.all_bets.firstAndSecond);
+            this.all_bets.firstAndSecond.reverse().reverse();//绑定视图更新
+            return;
           },
-
-          /*************两面盘下注*********************/
-
-
+          /*******************冠、亚下注*********/
+          first_and_second(k,k2){
+            var s =k;
+            if(k <= 1){
+              s=0
+            }else{
+              s=1
+            }
+            var index = null;
+            var money = this.bet_money;
+            var flag = false;
+            var key2 = ['A','B','C','D','E','F','G','H','I','J'];//特码后缀
+            var key = ['K','L','M','N','O','P']; // 两面后缀
+            var str='';
+            if(k%2 == 0){
+              str='ball_'+(s+1)+this.str_arr[k]+key2[k2];
+            }else{
+              str='ball_'+(s+1)+this.str_arr[k]+key[k2];
+            }
+            for(var i=0;i<this.all_bets.first_second.length;i++){
+              if(this.all_bets.first_second[i].content == str){
+                index = i;
+                money = this.all_bets.first_second[i].money + this.bet_money;
+                flag = true;
+                break;
+              }
+            }
+            if(flag){
+              this.all_bets.first_second[index].money = money;
+            }else{
+              var data = {
+                content:str,
+                money:money,
+              };
+              this.all_bets.first_second.push(data);
+            }
+            // console.log(flag);
+            // console.log(this.all_bets.first_second);
+            // console.log(str);
+          },
           /*************加入到下注大列表*********************/
           addToBetDataList()
           {
-                let array = Object.keys(this.all_bets);
-                this.data = [];
-
+           // console.log(this.all_odds);
+                let array = Object.keys(this.all_bets);//最原始的this.all_bets,还未push任何数据
+                this.data = [];//需要提交请求的数据
                 let all = [];
                 for(let i = 0; i < array.length;i++)
                 {
@@ -848,10 +896,10 @@
                           content: this.all_bets[array[i]][j].content,
                           money  : this.all_bets[array[i]][j].money
                      });
-
                       //找对应的中文下标
                       let index = this.dicrationaries.indexOf(this.all_bets[array[i]][j].content); // //找对应的中文下标
                       let str = '';//赔率
+                      //是否子盘开启
                       if(this.$store.state.son_off)
                       {
                         if(this.is_dec(this.bet_content[i].content,this.bet_content[i].money))
@@ -883,12 +931,7 @@
                 }
 
                 this.all = all;
-
-
-
-
-
-                return
+                return;
           },
 
           //清除所有下注内容，包括UI也需要
@@ -910,9 +953,12 @@
           },
 
           //用户点击 提交下注
-          do_bet()
-          {
-            this.$http.post(`${this.api}/pk10/order`,{bets:this.all,odds_table:'a'})
+          do_bet(){
+            if(this.all.length < 1){
+              this.$toast({message: '请选择下注内容'});
+              return false;
+            }
+            this.$http.post(`${this.api}/pk10/order`,{bets:this.all,odds_table:this.which_handicap})
               .then(function(res)
               {
                 if(res.data.status == 200)
@@ -950,7 +996,7 @@
           //获取用户可选盘口
           this.get_users_handicaps();
         },
-
+        //监听变化
         watch:
         {
           "rangeValue": function (n, o) {

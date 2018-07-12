@@ -62,7 +62,7 @@ export default {
         selected:1,
         timeIdCqssc:1,//cqssc的倒计时的id
         timeIdPk10:2,//pk10的倒计时的id
-        timeIdPcegg:3,//pcegg的倒计时id
+        timeIdegg:3,//pcegg的倒计时id
     }
   },
   methods:
@@ -274,7 +274,7 @@ export default {
     {
       let that  = this;
       //封盘倒计时
-      this.timeIdPcegg = setInterval(function()
+      this.timeIdegg = setInterval(function()
       {
         that.$store.state.egg.hours = '00';
         if(that.$store.state.egg.end_time <= 0)
