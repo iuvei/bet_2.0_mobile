@@ -76,8 +76,16 @@
         <ul v-show="isShowThisDiv[1]">
           <h2 class="title">波色</h2>
           <li v-for="(v,k) in odds.color">
-            <span class="bet-details">
+            <span class="bet-details"
+                  @click="bt_color(k)"
+                  :class="addActiveClass('color','ball_3__e'+(k+1))"
+            >
               <b>{{odds.color_str[k]}}<i>{{v}}</i></b>
+              <i class="ml5 color-white mr2"
+                 v-show="howMuch('color','ball_3__e'+(k+1))"
+              >
+                          ￥{{howMuch('color','ball_3__e'+(k+1))}}
+                    </i>
             </span>
           </li>
         </ul>
@@ -310,11 +318,24 @@
             }
           }
           this.all = all;
+          // console.log(this.bet_content);
           return;
         },
         //删除选中行
         delete_one:function(val){
+          var array = Object.keys(this.bet_content);
+          for(var i=0; i<array.length;i++){
+            for(var j = 0;j<this.bet_content[array[i]].length;j++){
+              if(this.bet_content[array[i]][j].content == val){
+                console.log(this.bet_content[array[i]][j].content);
+                this.bet_content[array[i]].splice(i,1);
+              }else{
+                // console.log(val);
 
+              }
+            }
+          }
+          this.addToBetDataList();
         },
         //用户点击选项，添加class  active;
         addActiveClass(type,key){
@@ -369,6 +390,32 @@
           this.bet_content.mixture.reverse().reverse();
           return;
         },
+        /*************波色下注************************/
+        bt_color(k){
+          var flag = false;
+          var index = '';
+          var money =this.bet_money;
+          var str = 'ball_3__e'+(k+1);
+          for(var i =0;i<this.bet_content.color.length;i++){
+            if(this.bet_content.color[i].content == str){
+              flag = true;
+              index = i;
+              money = this.bet_content.color[i].money + this.bet_money;
+              break;
+            }
+          }
+          if(flag){
+            this.bet_content.color[index].money = money;
+          }else{
+            var data = {
+              content:str,
+              money:money,
+            };
+            this.bet_content.color.push(data);
+          }
+          this.bet_content.color.reverse().reverse();
+          return;
+        },
         //获取最后一期的开奖号码
         get_last_code: function () {
           this.$http.get(this.api + '/egg/lastLty', {}).then(function (res) {
@@ -401,7 +448,7 @@
           {
             this.$http.get(`${this.api}/egg/odds?pan=${which_handicap?which_handicap:this.which_handicap}`).then(function (response)
             {
-              console.log(response);
+              // console.log(response);
               let data = response.data.data;
               let odds = data.odds;
               this.odds = {
@@ -485,13 +532,12 @@
         },
         //确定下注  ==>发送数据
         do_bet(){
-          console.log(123);
           if(this.all.length <1){
-            this.$store({message:'请选择下注内容'});
+            this.$toast({message:'请选择下注内容'});
             return false;
           }
           this.$http.post(this.api+'/egg/order',{bets:this.all,odds_table:this.which_handicap}).then(function(res){
-            console.log(res);
+            // console.log(res);
             if(res.status == 200){
               //清除下注内容
               this.clear_bet();

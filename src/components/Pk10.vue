@@ -1066,7 +1066,7 @@
             for(var a=0;a<array.length;a++){
               for(var b=0;b<this.all_bets[array[a]].length;b++){
                  if(this.all_bets[array[a]][b].content == val){
-                    // this.all_bets[array[a]].splice(b,1);
+                    this.all_bets[array[a]].splice(b,1);
                  }
               }
             }
