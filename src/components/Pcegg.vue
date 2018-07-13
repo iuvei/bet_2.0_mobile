@@ -3,6 +3,7 @@
       <!--头部-->
       <div class="header">
         <div class="mt15">
+          <!--上期开奖-->
           <span class="pull-left pre-expect">{{lastExpect}}</span>
           <div class="balls_box">
             <span class="color-white" :class="returnColor(lastOpenCode[0])">{{lastOpenCode[0]}}</span>
@@ -14,13 +15,21 @@
             <span class="color-white" :class="returnColor(lastOpenCode[0]+lastOpenCode[1]+lastOpenCode[2])">{{lastOpenCode[0]+lastOpenCode[1]+lastOpenCode[2]}}</span>
             <div class="clear"></div>
           </div>
-
           <div class="clear"></div>
         </div>
-
+        <!--时间-->
         <div class="mt10 expect-time">
           <span>{{$store.state.egg.thisExpect}}</span> &nbsp;&nbsp;
           <span>{{$store.state.egg.open_time<60?'准备开盘':'距离封盘'}} ：{{$store.state.egg.hours}}:{{$store.state.egg.minute}}:{{$store.state.egg.seconds}}</span>
+        </div>
+        <!--盘口选中-->
+        <div class="choose-handicaps">
+          <select name="handicaps" id="handicaps" v-model="which_handicap">
+            <option v-for="(v,k) in handicaps" v-bind:value="v.ratewin_name">
+              {{return_upper(v.ratewin_name)}}盘
+              <span class="pull-right chongtian" >返水{{return_percent(fanshui)}}</span>
+            </option>
+          </select>
         </div>
       </div>
       <!--head end-->
@@ -31,20 +40,42 @@
         </ul>
       </div>
       <!--/选项卡-->
+      <!--下注内容-->
       <div class="bet-content">
         <!--总和/两面-->
         <ul v-show="isShowThisDiv[0]">
           <h2 class="title">总和/两面</h2>
           <li v-for="(v,k) in odds.mixture">
-            <span class="bet-details">
+            <span class="bet-details"
+                  @click="bet_db(k)"
+                  v-if="k < 10"
+                  :class="addActiveClass('mixture','ball_2__e'+(k+1))"
+            >
               <b>{{odds.mixture_str[k]}} <i>{{v}}</i></b>
+              <i class="ml5 color-white mr2"
+                 v-show="howMuch('mixture','ball_2__e'+(k+1))"
+              >
+                          ￥{{howMuch('mixture','ball_2__e'+(k+1))}}
+                    </i>
+            </span>
+            <span class="bet-details"
+                  v-if="k>=10"
+                  @click="bet_db(k)"
+                  :class="addActiveClass('mixture','ball_4__e1')"
+            >
+              <b>{{odds.mixture_str[k]}} <i>{{v}}</i></b>
+               <i class="ml5 color-white mr2"
+                  v-show="howMuch('mixture','ball_4__e1')"
+               >
+                          ￥{{howMuch('mixture','ball_4__e1')}}
+                    </i>
             </span>
           </li>
         </ul>
         <!--波色-->
         <ul v-show="isShowThisDiv[1]">
           <h2 class="title">波色</h2>
-          <li v-for="(v,k) in odds.special">
+          <li v-for="(v,k) in odds.color">
             <span class="bet-details">
               <b>{{odds.color_str[k]}}<i>{{v}}</i></b>
             </span>
@@ -60,8 +91,41 @@
           </li>
         </ul>
       </div>
+      <!--当前下注列表-->
+      <div class="bet-money">
+        <span class="btn-pull1" @click="test">下注</span>
+        <div>
+          <!--反水设置-->
+          <mt-range v-model="rangeValue" :min="0" :max="140" :step="1" style="width: 100%;">
+            <div slot="start" style="text-indent:10px;">返水:&nbsp;&nbsp;&nbsp;&nbsp;</div>
+            <div slot="end" style="margin-right: 5px;">14%</div>
+          </mt-range>
+        </div>
+        <!--下注列表-->
+        <div class="bet-list mt15">
+          <p class="color-white text-left" style="margin-bottom: 5px;text-indent: 10px;">
+            下注列表 <span class="pull-right" style="margin-right: 5px;"> 返水{{rangeValue/10}}%</span>
+          </p>
+          <ul class="text-left nmbd-ul">
+            <li v-for="(v,k) in data">
+              <span style="width: 6.5rem;">{{v.content}}</span>
+              <span style="width: 2.4rem;text-align: left;">{{v.odds}}</span>
+              <span class="color-white bet-one-money">￥{{v.money}}</span>
+              <span>返{{v.fs}}</span>
+              <span
+                class="pull-right mr10 color-red"
+                style="margin-right: 25px;"
+                @click="delete_one(v.content1)">X</span>
+            </li>
+          </ul>
+        </div>
+        <div class="btns">
+          <a class="submit-all"  @click="do_bet()">提交</a>
+        </div>
+      </div>
       <!--下注金额选择-->
       <div class="choose-money" style='position:fixed;bottom: 56px;left: 0;'>
+        <!--<a class="clear-all">重置金额</a>-->
         <span class="bg-white reset" @click="reset">重置</span>
         <!--<span></span>-->
         <span style="background-position: -32px 0;" :class="bet_money == 5?'selected':''"
@@ -93,14 +157,36 @@
             which_handicap:'',//用户当前所选的盘口是哪个  a  b  c  d ...
             fanshui:0,//反水
             bet_money:10,//默认下注金额
-            odds: //赔率
-              {
+            rangeValue: 0,//下注返水百分比
+            outSide: false,//右侧投注列表是否显示（false：隐藏；true:显示）
+            timeId1:0,//打开  隐藏的动画
+            //下注列表展示的数据
+            data:
+              [
+                {content: "第一球单", odds: 1.9851, odds2: 1.985, money: 100, fs: 0},
+                {content: "第二球单", odds: 1.9951, odds2: 1.985, money: 200, fs: 0},
+                {content: "第三球单", odds: 1.9451, odds2: 1.985, money: 600, fs: 0},
+                {content: "第四球单", odds: 1.9751, odds2: 1.985, money: 300, fs: 0},
+                {content: "第五球单", odds: 1.9650, odds2: 1.985, money: 900000, fs: 0},
+              ],
+            //赔率
+            odds:{
                 mixture: [],//两面赔率数组
                 mixture_str: ['大', '小', '单', '双', '大单', '大双', '小单', '小双', '极大', '极小', '豹子'],//两面的名称
                 color: [],//波色赔率
                 color_str: ['红波', '绿波', '蓝波'],//波色名称
                 special: [],//总和 特码赔率数组
               },
+            //下注保存的内容
+            bet_content:
+              {
+                mixture: [],//保存两面的下注数据
+                color: [],//保存波色的下注数据
+                special: [],//保存特码的下注数据
+              },
+            all:[],//所有要下注的内容原样合集，用于向服务器提交使用
+            bet_son_content:[],//子盘下注集合
+            //迭倍吧
             dec_limit:
               {
                 ball_1:{},
@@ -111,6 +197,28 @@
               },
             all_odds:[],
             long_dragon:[],
+            //字典1
+            dicrationaries:[
+              'ball_1__e1','ball_1__e2','ball_1__e3','ball_1__e4','ball_1__e5','ball_1__e6',
+              'ball_1__e7','ball_1__e8','ball_1__e9','ball_1__e10','ball_1__e11','ball_1__e12',
+              'ball_1__e13','ball_1__e14','ball_1__e15','ball_1__e16','ball_1__e17','ball_1__e18',
+              'ball_1__e19','ball_1__e20','ball_1__e21','ball_1__e22','ball_1__e23',
+              'ball_1__e24','ball_1__e25','ball_1__e26','ball_1__e27','ball_1__e28',
+              'ball_2__e1','ball_2__e2','ball_2__e3','ball_2__e4','ball_2__e5','ball_2__e6',
+              'ball_2__e7','ball_2__e8','ball_2__e9','ball_2__e10',
+              'ball_4__e1',
+              'ball_3__e1','ball_3__e2','ball_3__e3',
+            ],
+            //字典2
+            dicrationaries_2:[
+                '特码-0','特码-1','特码-2','特码-3','特码-4','特码-5','特码-6','特码-7','特码-8','特码-9',
+                '特码-10','特码-11','特码-12','特码-13','特码-14','特码-15','特码-16','特码-17','特码-18','特码-19',
+                '特码-20','特码-21','特码-22','特码-23','特码-24','特码-25','特码-26','特码-27',
+
+                '混合-大','混合-小','混合-单','混合-双','混合-大单','混合-大双','混合-小单','混合-小双','混合-极大','混合-极小','混合-豹子',
+
+                '波色-红波','波色-绿波','波色-蓝波',
+              ],
           }
       },
       methods:{
@@ -120,6 +228,146 @@
           this.isShowThisDiv = [0,0,0];
           this.isActive[index] = 1;
           this.isShowThisDiv[index] = 1;
+        },
+        //右边下注的（弹框显示用户选中的相）
+        test() {
+          if (!this.outSide) {
+            let BrowserHeight = document.body.clientWidth;
+            let betContent = document.querySelector('.bet-money');
+            let startLeft = betContent.offsetLeft;
+            let that = this;
+            this.timeId1 = setInterval(function ()
+            {
+
+              if (startLeft < BrowserHeight) {
+                startLeft += 4;
+                betContent.style.left = startLeft + "px";
+              }
+              else {
+                clearInterval(that.timeId1);
+                that.outSide = !that.outSide;
+              }
+            }, 3);
+          }
+          else
+          {
+            let BrowserHeight = document.body.clientWidth;
+            let betContent = document.querySelector('.bet-money');
+            let startLeft = betContent.offsetLeft;
+            let that = this;
+            this.timeId1 = setInterval(function () {
+
+              if (startLeft > 100) {
+                startLeft -= 4;
+                betContent.style.left = startLeft + "px";
+              }
+              else {
+                clearInterval(that.timeId1);
+                that.outSide = !that.outSide;
+              }
+            }, 3);
+            this.addToBetDataList();
+          }
+        },
+        //将选中的数据加入到右侧下注列表中
+        addToBetDataList(){
+          var array = Object.keys(this.bet_content);
+          this.data = [];
+          var all = [];
+          for(var i = 0;i<array.length;i++){
+            for(var j=0;j<this.bet_content[array[i]].length;j++){
+              all.push(
+                {
+                  content:this.bet_content[array[i]][j].content,
+                  money:this.bet_content[array[i]][j].money,
+                }
+              );
+              //找对应的中文下标
+              var index = this.dicrationaries.indexOf(this.bet_content[array[i]][j].content);
+              var str = '';//赔率
+              //是否子盘开启
+              if(this.$store.state.son_off){
+                if(this.is_dec(this.bet_son_content[i].content,this.bet_son_content[i].money)){
+                  var odds =(Number(this.all_odds[index]) - Number(this.is_dec(this.bet_son_content[i].content,this.bet_son_content[i].money))).toFixed(4);
+                  str += odds;
+                }else{
+                  str += `${this.all_odds[index]}`;
+                }
+              }else{
+                str += `${this.all_odds[index]}`;
+              }
+              //push 到列表展示
+              this.data.push(
+                {
+                  content1:this.bet_content[array[i]][j].content,
+                  content:this.dicrationaries_2[index],
+                  odds:str,
+                  odds2:1.985,
+                  money:this.bet_content[array[i]][j].money,
+                  fs:0
+                }
+              )
+            }
+          }
+          this.all = all;
+          return;
+        },
+        //删除选中行
+        delete_one:function(val){
+
+        },
+        //用户点击选项，添加class  active;
+        addActiveClass(type,key){
+          for(var i = 0;i<this.bet_content[type].length;i++){
+            if(this.bet_content[type][i].content == key){
+              return 'active';
+            }
+          }
+        },
+        //显示金额
+        howMuch:function(type,key){
+          for(var i = 0;i<this.bet_content[type].length;i++){
+            if(this.bet_content[type][i].content == key){
+              return this.bet_content[type][i].money;
+            }
+          }
+        },
+        /*下注区
+        *总和 两面下注格式(大--极小)：ball_2__(e1-e10)、、(豹子)：ball_4__e1
+        * 波色格式：ball_3__(e1-e3)
+        *总和特码：ball_1__(e1-e28)
+        * */
+        /***************两面盘下注******************/
+        bet_db:function(k){
+          var index =null;
+          var money = this.bet_money;
+          var flag = false;
+          var str = '';//对比的字符串
+          if(k < 10){
+            str = 'ball_2__e'+(k+1);
+          }else{
+            str = 'ball_4__e1';
+          }
+          for(var i =0;i<this.bet_content.mixture.length; i++){
+            if(this.bet_content.mixture[i].content == str){
+              index = i;
+              flag = true;
+              money = this.bet_content.mixture[i].money + this.bet_money;
+              break;
+            }
+          }
+          if(flag){
+            this.bet_content.mixture[index].money = money;
+          }else{
+            var data = {
+              content : str,
+              money :money,
+            };
+            this.bet_content.mixture.push(data);
+          }
+          // console.log(this.bet_content.mixture);
+          this.bet_content.mixture.reverse().reverse();
+          return;
         },
         //获取最后一期的开奖号码
         get_last_code: function () {
@@ -136,7 +384,6 @@
         get_users_handicaps: function () {
           this.$http.get(`${this.api}/egg/pans`)
             .then(function (res) {
-              // console.log(res);
               this.handicaps = [];
               if (res.data.status == 200) {
                 for (let i = 0; i < res.data.data.ratelist.length; i++) {
@@ -236,13 +483,59 @@
         changeBetMoney: function (money) {
           this.bet_money = money;
         },
+        //确定下注  ==>发送数据
+        do_bet(){
+          console.log(123);
+          if(this.all.length <1){
+            this.$store({message:'请选择下注内容'});
+            return false;
+          }
+          this.$http.post(this.api+'/egg/order',{bets:this.all,odds_table:this.which_handicap}).then(function(res){
+            console.log(res);
+            if(res.status == 200){
+              //清除下注内容
+              this.clear_bet();
+              //获取用余额
+              this.$http.get(this.api + '/user/'+ window.sessionStorage.user_id).then(function(result){
+                var data = result.data.data.user;
+                this.$set(this.$store.state,'cash_money',data.money.cash_money)
+              });
+              //tips
+              this.$toast({message:res.data.msg});
+            }else{
+              this.$toast({message:res.data.msg});
+            }
+          })
+        },
+        //清除所有下注内容，包括UI也需要
+        clear_bet()
+        {
+          this.all = [];
+          this.data = [];
+          this.bet_content  = {
+              mixture: [],//保存两面的下注数据
+              color: [],//保存波色的下注数据
+              special: [],//保存特码的下注数据
+            };
+        },
+        //清空数据
         reset() {
-          //清空数据
           this.bets = [];
         },
+        //用户盘口
+        return_percent:function(str){
+          return str;
+        },
+        return_upper:function(str){
+          return str.toUpperCase();
+        },
       },
-        created()
-        {
+        created(){
+          //关闭右侧下注列表
+          let that = this;
+          setTimeout(() => {
+            that.test();
+          }, 300);
           //获取最后一期的开奖号码
           this.get_last_code();
           //获取用户可选盘口

@@ -5,13 +5,21 @@
        <div class="mt15">
          <span class="pull-left pre-expect">{{lastExpect}}</span>
          <span class="balls" v-for="v in lastOpenCode" :class="'hao' + (v/10*10)" >{{v/10*10}}</span>
-
          <div class="clear"></div>
        </div>
 
        <div class="mt10 expect-time">
          <span>{{$store.state.pk10.thisExpect}}</span> &nbsp;&nbsp;
          <span>{{$store.state.pk10.open_time<60?'准备开盘':'距离封盘'}} ：{{$store.state.pk10.hours}}:{{$store.state.pk10.minute}}:{{$store.state.pk10.seconds}}</span>
+       </div>
+
+       <div class="choose-handicaps">
+         <select name="handicaps" id="handicaps" v-model="which_handicap">
+           <option v-for="(v,k) in handicaps" v-bind:value="v.ratewin_name">
+             {{return_upper(v.ratewin_name)}}盘
+             <span class="pull-right chongtian" >返水{{return_percent(fanshui)}}</span>
+           </option>
+         </select>
        </div>
      </div>
      <!--/头部-->
@@ -278,23 +286,16 @@
 
      <!--当前的下注列表-->
      <div class="bet-money">
-                <span class="btn-pull1" @click="test">
-                    下注
-                </span>
+       <span class="btn-pull1" @click="test">下注</span>
        <div>
          <mt-range v-model="rangeValue" :min="0"
                    :max="140" :step="1" style="width: 100%;">
            <div slot="start" style="text-indent:10px;">返水:&nbsp;&nbsp;&nbsp;&nbsp;</div>
            <div slot="end" style="margin-right: 5px;">14%</div>
-
-
          </mt-range>
        </div>
 
-
        <div class="bet-list mt15">
-
-
          <p class="color-white text-left" style="margin-bottom: 5px;text-indent: 10px;">
            下注列表 <span class="pull-right" style="margin-right: 5px;"> 返水{{rangeValue/10}}%</span>
          </p>
@@ -307,7 +308,7 @@
              <span
                class="pull-right mr10 color-red"
                style="margin-right: 25px;"
-               @click="delete_one(v.which,v.money,k)">X</span>
+               @click="delete_one(v.content1)">X</span>
 
            </li>
          </ul>
@@ -596,8 +597,6 @@
               '冠亚军-特码-18','冠亚军-特码-19',
 
             ],
-
-
             //趺背的数据
             dec_limit:
             {
@@ -632,7 +631,6 @@
             keys2 : ['K','L','M','N'],//没有龙虎的两面：大、小、单、双
             keys3:['A','B','C','D','E','F','G','H','I','J'],//球1--球10
             keys4:['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q'],//冠亚军总和 3--19
-
             //每一个tab对应的下注合集
             all_bets :
             {
@@ -708,7 +706,6 @@
               this.addToBetDataList();
             }
           },
-
           //获取最后一期的开奖号码
           get_last_code: function () {
             this.$http.get(this.api + '/pk10/lastLty', {}).then(function (res) {
@@ -718,15 +715,13 @@
               this.lastExpect = data.expect;
             });
           },
-
-
-
           /**
            * 查看用户可选盘口
            */
           get_users_handicaps: function () {
             this.$http.get(this.api+'/pk10/pans')
               .then(function (res) {
+                console.log(res);
                 this.handicaps = [];
                 if (res.data.status == 200) {
                   for (let i = 0; i < res.data.data.ratelist.length; i++) {
@@ -826,7 +821,6 @@
           reset() {
             //清空数据
             this.bets = [];
-
           },
           //用户点击选项，添加class  active;
           addActiveClass(type,key){
@@ -962,7 +956,7 @@
             this.all_bets.firstAndSecond.reverse().reverse();//绑定视图更新
             return;
           },
-          /*******************冠、亚下注*********/
+          /*******************冠、亚、3、4、5、6、7、8、9、10 下注*********/
           first_and_second(k,k2,type,arr){
             var index = null;
             var money = this.bet_money;
@@ -994,13 +988,11 @@
             }
             // console.log(flag);
             // console.log(this.all_bets[type]);
-            console.log(str);
+            // console.log(str);
           },
           /*************加入到下注大列表*********************/
-          addToBetDataList()
-          {
-           // console.log(this.all_odds);
-                let array = Object.keys(this.all_bets);//最原始的this.all_bets,还未push任何数据
+          addToBetDataList(){
+                let array = Object.keys(this.all_bets);//将对象this.all_bets  转换成数组 且未push 任何数据
                 this.data = [];//需要提交请求的数据
                 let all = [];
                 for(let i = 0; i < array.length;i++)
@@ -1008,12 +1000,14 @@
                   for(let j = 0;j<this.all_bets[array[i]].length;j++)
                   {
                      all.push(
-                     {
+                        {
                           content: this.all_bets[array[i]][j].content,
                           money  : this.all_bets[array[i]][j].money
-                     });
+                        }
+                     );
                       //找对应的中文下标
                       let index = this.dicrationaries.indexOf(this.all_bets[array[i]][j].content); // //找对应的中文下标
+                    // console.log(index);
                       let str = '';//赔率
                       //是否子盘开启
                       if(this.$store.state.son_off)
@@ -1032,9 +1026,9 @@
                       {
                         str += `${this.all_odds[index]}`;
                       }
-                      this.data.push
-                      (
+                      this.data.push(
                        {
+                         content1:this.all_bets[array[i]][j].content,//原始，未对应中文的数据
                          content:this.dicrationaries_2[index],
                          odds: str,
                          odds2: 1.985,
@@ -1042,11 +1036,10 @@
                          fs: 0
                        },
                       )
-
                   }
                 }
-
                 this.all = all;
+                // console.log(this.data);
                 return;
           },
 
@@ -1067,7 +1060,18 @@
               ninth_tenth:[],
             };
           },
-
+          //删除不想投注的下注项
+          delete_one:function(val){
+            let array = Object.keys(this.all_bets);//将对象this.all_bets 转换成数组，且未push 任何数据
+            for(var a=0;a<array.length;a++){
+              for(var b=0;b<this.all_bets[array[a]].length;b++){
+                 if(this.all_bets[array[a]][b].content == val){
+                    // this.all_bets[array[a]].splice(b,1);
+                 }
+              }
+            }
+            this.addToBetDataList();
+          },
           //用户点击 提交下注
           do_bet(){
             if(this.all.length < 1){
@@ -1097,9 +1101,17 @@
                   this.$toast({message: res.data.msg});
                 }
               });
-          }
+          },
 
-
+          //用户盘口
+          return_percent:function(str)
+          {
+            return str;
+          },
+          return_upper:function(str)
+          {
+            return str.toUpperCase();
+          },
         },
         created()
         {

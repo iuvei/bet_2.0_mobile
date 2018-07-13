@@ -79,6 +79,7 @@ export default {
       {
         this.$http.get(this.api + "/user/" + window.sessionStorage.user_id ).then(function (response)
         {
+          console.log(response);
           if(response.data.status == 200)
           {
             let  data = response.data.data.user;

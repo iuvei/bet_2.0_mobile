@@ -92,8 +92,8 @@ td
 {
   display: block;
   position: fixed;
-  top: 120px;
-  left: 110px;
+  top: 8.8rem;
+  left:7rem;
   /*right:0;*/
   bottom:56px;
   /*width: 302px;*/
@@ -162,9 +162,10 @@ td
   margin-left: 2%;
 }
 
-#cqssc {
+#egg {
   width: 100%;
   overflow: hidden;
+  position:relative;
 }
 
 .header {
@@ -176,7 +177,19 @@ td
   overflow: hidden;
   height: 6rem;
 }
-
+.choose-handicaps
+{
+  position: absolute;
+  right:1.2rem;
+  bottom:.7rem;
+}
+#handicaps
+{
+  -webkit-border-radius: 0.3rem;
+  -moz-border-radius: 0.3rem;
+  border-radius: 0.3rem;
+  padding-bottom: .2rem;
+}
 .expect-time
 {
   height: 2rem;

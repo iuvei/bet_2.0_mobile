@@ -143,7 +143,6 @@ Vue.prototype.turnUrl = function ( url )
     return;
 };
 
-
 Vue.prototype.toFix2 = function ( number )
 {
    return number.toFixed(2);
