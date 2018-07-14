@@ -72,7 +72,7 @@
             for(let i=0;i<arr.length;i++){
               sum+=arr[i].sum_data[type];
             }
-            return sum;
+            return sum.toFixed(2);
         }
       },
       created(){

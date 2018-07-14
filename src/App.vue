@@ -63,6 +63,7 @@ export default {
         timeIdCqssc:1,//cqssc的倒计时的id
         timeIdPk10:2,//pk10的倒计时的id
         timeIdegg:3,//pcegg的倒计时id
+        timeIdcake:4,//加拿大28倒计时id
     }
   },
   methods:
@@ -330,14 +331,72 @@ export default {
       },1000);
       //开盘倒计时
     },
+
+    //加拿大28的时间
+    get_cake_time(){
+        this.$http.get(this.api + '/cake/time').then(function(res){
+          // console.log(res);
+          var data = res.data;
+          this.$store.state.cake.end_time = data.endtime;//封盘时间
+          this.$store.state.cake.open_time = data.opentime;//开盘时间
+          this.$store.state.cake.thisExpect = data.expect;//下注期数
+          this.count_down_cake();//倒计时
+        })
+    },
+    //倒计时
+    count_down_cake(){
+        var that = this;
+        this.timeIdcake = setInterval(function(){
+          that.$store.state.cake.hours = '00';
+          if(that.$store.state.cake.end_time <=0 ){
+            that.$store.state.cake.minute = '00';
+            that.$store.state.cake.seconds = that.$store.state.cake.open_time<10?('0'+that.$store.state.cake.open_time.toString()):that.$store.state.cake.open_time;
+            that.$store.state.cake.open_state = false;
+            if(that.$store.state.cake.end_time ==0 ){
+              that.thisExpect = parseInt(that.thisExpect) + 1;
+            }
+            if(that.$store.state.cake.open_time <=0 ){
+              if(that.$store.state.cake.open_time < -100)
+              {
+                that.$store.state.cake.hours = Math.floor(-that.$store.state.cake.open_time/(60*60));
+                let hours = Math.floor(-that.$store.state.cake.open_time/(60*60));
+                that.$store.state.cake.hours = that.$store.state.cake.hours == 0 ? '00': ('0' + that.$store.state.cake.hours.toString());
+                that.$store.state.cake.minute = Math.floor((-that.$store.state.cake.open_time - (hours * 3600)) / 60)
+                that.$store.state.cake.seconds = Math.floor((-that.$store.state.cake.open_time)%60 );
+              }
+              if(that.$store.state.cake.open_time == 0){
+                //清楚定时器
+                clearInterval(that.timeIdcake);
+                //重新获取时间
+                that.get_cake_time();
+                that.$store.state.cake.open_state = true;
+              }else{
+                that.$store.state.cake.open_time++;
+              }
+              return;
+            }
+          }else{
+            var mins = Math.floor(that.$store.state.cake.end_time/60);
+            mins = '0' + mins;
+            that.$store.state.cake.minute = mins;
+            var seconds = Math.floor(that.$store.state.cake.end_time/60);
+            seconds = seconds>9?seconds:('0'+seconds);
+            that.$store.state.cake.seconds = seconds;
+            that.$store.state.cake.open_state = true;
+          }
+
+          that.$store.state.cake.end_time--;
+          that.$store.state.cake.open_time--;
+        },1000);
+    },
   },
   created()
   {
     this.get_users_info();
     this.get_cqssc_time();
-
     this.get_pk10_time();
     this.get_egg_time();
+    this.get_cake_time();
   },
   watch:
   {

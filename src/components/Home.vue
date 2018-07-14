@@ -64,7 +64,7 @@
                         <div style="margin-left: 5px;">PC蛋蛋</div>
                     </div>
 
-                    <div class="bjls bgbg mt6">
+                    <div class="bjls bgbg mt6" @click="turnTo('cake')">
                         <img src="../assets/img/icon_jnd28.png" alt="" style="width: 35px;margin-left: 10px;">
                         <div style="margin-left: 5px;">加拿大28</div>
                     </div>

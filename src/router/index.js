@@ -15,6 +15,7 @@ import OneDayBill from '@/components/OneDayBill';
 import Cqssc from '@/components/Cqssc';
 import Pk10 from '@/components/Pk10';
 import Pcegg from '@/components/Pcegg';
+import cake from '@/components/cake';
 
 import OpenCodes from '@/components/open_codes/OpenCodes';
 import OpenCodesCqssc from '@/components/open_codes/OpenCodesCqssc';
@@ -69,6 +70,11 @@ export default new Router({
       path: '/Pcegg',
       name: 'Pcegg',
       component: Pcegg
+    },
+    {
+      path: '/cake',
+      name: 'cake',
+      component: cake
     },
     {
         path: '/randw',

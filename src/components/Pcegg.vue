@@ -51,7 +51,7 @@
                   v-if="k < 10"
                   :class="addActiveClass('mixture','ball_2__e'+(k+1))"
             >
-              <b>{{odds.mixture_str[k]}} <i>{{v}}</i></b>
+              <b>总和{{odds.mixture_str[k]}} <i>{{v}}</i></b>
               <i class="ml5 color-white mr2"
                  v-show="howMuch('mixture','ball_2__e'+(k+1))"
               >
@@ -93,8 +93,16 @@
         <ul v-show="isShowThisDiv[2]">
           <h2 class="title">总和特码</h2>
           <li v-for="(v,k) in odds.special">
-            <span class="bet-details">
-              <b>{{k}}&nbsp;<i>{{v}}</i></b>
+            <span class="bet-details"
+                  @click="bt_special(k)"
+                  :class="addActiveClass('special','ball_1__e'+(k+1))"
+            >
+              <b>总和{{k}}&nbsp;<i>{{v}}</i></b>
+              <i class="ml5 color-white mr2"
+                 v-show="howMuch('special','ball_1__e'+(k+1))"
+              >
+                          ￥{{howMuch('special','ball_1__e'+(k+1))}}
+                    </i>
             </span>
           </li>
         </ul>
@@ -171,11 +179,11 @@
             //下注列表展示的数据
             data:
               [
-                {content: "第一球单", odds: 1.9851, odds2: 1.985, money: 100, fs: 0},
-                {content: "第二球单", odds: 1.9951, odds2: 1.985, money: 200, fs: 0},
-                {content: "第三球单", odds: 1.9451, odds2: 1.985, money: 600, fs: 0},
-                {content: "第四球单", odds: 1.9751, odds2: 1.985, money: 300, fs: 0},
-                {content: "第五球单", odds: 1.9650, odds2: 1.985, money: 900000, fs: 0},
+                // {content: "第一球单", odds: 1.9851, odds2: 1.985, money: 100, fs: 0},
+                // {content: "第二球单", odds: 1.9951, odds2: 1.985, money: 200, fs: 0},
+                // {content: "第三球单", odds: 1.9451, odds2: 1.985, money: 600, fs: 0},
+                // {content: "第四球单", odds: 1.9751, odds2: 1.985, money: 300, fs: 0},
+                // {content: "第五球单", odds: 1.9650, odds2: 1.985, money: 900000, fs: 0},
               ],
             //赔率
             odds:{
@@ -327,11 +335,10 @@
           for(var i=0; i<array.length;i++){
             for(var j = 0;j<this.bet_content[array[i]].length;j++){
               if(this.bet_content[array[i]][j].content == val){
-                console.log(this.bet_content[array[i]][j].content);
-                this.bet_content[array[i]].splice(i,1);
+                // console.log(this.bet_content[array[i]][j].content);
+                this.bet_content[array[i]].splice(j,1);
               }else{
                 // console.log(val);
-
               }
             }
           }
@@ -360,7 +367,7 @@
         * */
         /***************两面盘下注******************/
         bet_db:function(k){
-          var index =null;
+          var a =null;
           var money = this.bet_money;
           var flag = false;
           var str = '';//对比的字符串
@@ -371,14 +378,14 @@
           }
           for(var i =0;i<this.bet_content.mixture.length; i++){
             if(this.bet_content.mixture[i].content == str){
-              index = i;
+              a = i;
               flag = true;
               money = this.bet_content.mixture[i].money + this.bet_money;
               break;
             }
           }
           if(flag){
-            this.bet_content.mixture[index].money = money;
+            this.bet_content.mixture[a].money = money;
           }else{
             var data = {
               content : str,
@@ -393,19 +400,19 @@
         /*************波色下注************************/
         bt_color(k){
           var flag = false;
-          var index = '';
+          var a = '';
           var money =this.bet_money;
           var str = 'ball_3__e'+(k+1);
           for(var i =0;i<this.bet_content.color.length;i++){
             if(this.bet_content.color[i].content == str){
               flag = true;
-              index = i;
+              a = i;
               money = this.bet_content.color[i].money + this.bet_money;
               break;
             }
           }
           if(flag){
-            this.bet_content.color[index].money = money;
+            this.bet_content.color[a].money = money;
           }else{
             var data = {
               content:str,
@@ -416,6 +423,33 @@
           this.bet_content.color.reverse().reverse();
           return;
         },
+        /*********************总和特码下注************************/
+        bt_special(k){
+          var flag = false;
+          var a = '';
+          var money = this.bet_money;
+          var str = 'ball_1__e'+(k+1);
+          for(var i = 0;i<this.bet_content.special.length;i++){
+            if(this.bet_content.special[i].content == str){
+              flag = true;
+              a = i;
+              money = this.bet_content.special[i].money + this.bet_money;
+              break;
+            }
+          }
+          if(flag){
+            this.bet_content.special[a].money = money;
+          }else{
+            var data ={
+              content:str,
+              money:money,
+            };
+            this.bet_content.special.push(data);
+          }
+          this.bet_content.special.reverse().reverse();
+          return;
+        },
+        /**********************************************/
         //获取最后一期的开奖号码
         get_last_code: function () {
           this.$http.get(this.api + '/egg/lastLty', {}).then(function (res) {
@@ -589,6 +623,7 @@
         },
 
         watch:
+        //试试监听函数
         {
           "rangeValue": function (n, o) {
           for (let i = 0; i < this.data.length; i++) {
